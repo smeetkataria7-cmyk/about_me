@@ -175,6 +175,22 @@ footer{padding:60px 28px;text-align:center;font-size:.78rem;color:var(--ink2);bo
 .reveal-soft{opacity:0;transition:opacity .9s var(--ease);transition-delay:calc(var(--i,0) * 60ms);}
 .reveal-soft.in{opacity:1;}
 
+/* WORD SPLIT — hero h1 word-by-word rise */
+.h-word{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.h-word > span{display:inline-block;transform:translateY(105%);transition:transform .9s cubic-bezier(.22,.61,.36,1);transition-delay:calc(var(--i,0) * 70ms);}
+.h-word.in > span{transform:translateY(0);}
+
+/* MAGNETIC BUTTON — 3D-ish pull toward pointer */
+.btn{will-change:transform;}
+
+/* NAV ACTIVE INDICATOR */
+.tb-nav a.active{color:var(--ink);}
+.tb-nav a.active::after{transform:scaleX(1);}
+
+/* HERO PHOTO TILT — perspective wrapper */
+.hero-photo{perspective:1000px;}
+.hero-photo img,.hero-photo-fallback{transition:transform .3s var(--ease);}
+
 /* SCROLL PROGRESS BAR — hairline gold under the topbar */
 .progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:200;transform-origin:left;transform:scaleX(0);transition:transform .1s linear;box-shadow:0 0 12px rgba(217,113,66,.6);}
 
@@ -544,6 +560,110 @@ document.getElementById('yr').textContent=new Date().getFullYear();
       const r=card.getBoundingClientRect();
       card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
       card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+})();
+
+// Hero h1 word-by-word slide-up
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  const h1=document.querySelector('.hero h1');
+  if(!h1)return;
+  // walk each direct text/element node, wrap words in .h-word > span while preserving <span> and <br>
+  const nodes=[...h1.childNodes];
+  h1.innerHTML='';
+  let idx=0;
+  nodes.forEach(node=>{
+    if(node.nodeType===3){
+      node.nodeValue.split(/(\s+)/).forEach(part=>{
+        if(!part)return;
+        if(/^\s+$/.test(part)){h1.appendChild(document.createTextNode(part));return;}
+        const wrap=document.createElement('span');
+        wrap.className='h-word';
+        wrap.style.setProperty('--i',idx++);
+        const inner=document.createElement('span');
+        inner.textContent=part;
+        wrap.appendChild(inner);
+        h1.appendChild(wrap);
+      });
+    }else if(node.nodeName==='BR'){
+      h1.appendChild(node.cloneNode());
+    }else{
+      // wrap the entire element (e.g. italic accent <span>) as one word
+      const wrap=document.createElement('span');
+      wrap.className='h-word';
+      wrap.style.setProperty('--i',idx++);
+      const inner=document.createElement('span');
+      inner.appendChild(node.cloneNode(true));
+      wrap.appendChild(inner);
+      h1.appendChild(wrap);
+    }
+  });
+  requestAnimationFrame(()=>{
+    h1.querySelectorAll('.h-word').forEach(w=>w.classList.add('in'));
+  });
+})();
+
+// Hero photo cursor-tilt (subtle 3D parallax)
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  const photo=document.querySelector('.hero-photo');
+  if(!photo)return;
+  const inner=photo.querySelector('img')||photo.querySelector('.hero-photo-fallback');
+  const hero=document.querySelector('.hero');
+  if(!hero||!inner)return;
+  hero.addEventListener('pointermove',(e)=>{
+    const r=photo.getBoundingClientRect();
+    const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const dx=(e.clientX-cx)/window.innerWidth;
+    const dy=(e.clientY-cy)/window.innerHeight;
+    const rx=(-dy*8).toFixed(2);
+    const ry=(dx*10).toFixed(2);
+    inner.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) scale(1.04)`;
+  });
+  hero.addEventListener('pointerleave',()=>{
+    inner.style.transform='';
+  });
+})();
+
+// Nav active-section indicator (scroll spy)
+(function(){
+  const links=[...document.querySelectorAll('.tb-nav a')];
+  const map=new Map();
+  links.forEach(l=>{
+    const id=l.getAttribute('href')?.replace('#','');
+    if(!id)return;
+    const sec=document.getElementById(id);
+    if(sec)map.set(sec,l);
+  });
+  if(!map.size)return;
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      const link=map.get(e.target);
+      if(!link)return;
+      if(e.isIntersecting)link.classList.add('active');
+      else link.classList.remove('active');
+    });
+  },{rootMargin:'-40% 0px -55% 0px'});
+  map.forEach((_,sec)=>io.observe(sec));
+})();
+
+// Magnetic CTA buttons — gentle pull toward cursor
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  document.querySelectorAll('.btn').forEach(btn=>{
+    btn.addEventListener('pointermove',(e)=>{
+      const r=btn.getBoundingClientRect();
+      const cx=r.left+r.width/2, cy=r.top+r.height/2;
+      const dx=(e.clientX-cx)/r.width;
+      const dy=(e.clientY-cy)/r.height;
+      btn.style.transform=`translate(${dx*8}px, ${dy*6}px)`;
+    });
+    btn.addEventListener('pointerleave',()=>{
+      btn.style.transform='';
     });
   });
 })();
