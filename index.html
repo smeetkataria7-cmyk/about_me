@@ -149,12 +149,29 @@ section{padding:120px 0;border-top:1px solid var(--border);}
 
 /* FOOTER */
 footer{padding:60px 28px;text-align:center;font-size:.78rem;color:var(--ink2);border-top:1px solid var(--border);font-family:'JetBrains Mono',monospace;letter-spacing:.05em;}
+
+/* SCROLL REVEALS — emil-design-eng discipline: subtle, GPU-only, staggered, respectful */
+.reveal{opacity:0;transform:translate3d(0,18px,0);transition:opacity .7s var(--ease),transform .7s var(--spring);transition-delay:calc(var(--i,0) * 60ms);will-change:opacity,transform;}
+.reveal.in{opacity:1;transform:translate3d(0,0,0);}
+.reveal-soft{opacity:0;transition:opacity .9s var(--ease);transition-delay:calc(var(--i,0) * 60ms);}
+.reveal-soft.in{opacity:1;}
+
+/* SCROLL PROGRESS BAR — hairline gold under the topbar */
+.progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:200;transform-origin:left;transform:scaleX(0);transition:transform .1s linear;box-shadow:0 0 12px rgba(212,169,106,.6);}
+
+/* PREFERS-REDUCED-MOTION — kill everything ambient */
+@media (prefers-reduced-motion: reduce){
+  .reveal,.reveal-soft{opacity:1!important;transform:none!important;transition:none!important;}
+  .bg-mesh span,.bg-stars span{animation:none!important;}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}
+}
 </style>
 </head>
 <body>
 
 <div class="bg-mesh" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span></div>
 <div class="bg-stars" id="stars" aria-hidden="true"></div>
+<div class="progress-bar" id="progress" aria-hidden="true"></div>
 
 <nav id="topbar">
   <a class="tb-logo" href="#top">Smeet <em>Kataria</em></a>
@@ -388,6 +405,7 @@ footer{padding:60px 28px;text-align:center;font-size:.78rem;color:var(--ink2);bo
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
 
+// Stars
 (function(){
   const host=document.getElementById('stars');
   const N=80;
@@ -402,6 +420,113 @@ document.getElementById('yr').textContent=new Date().getFullYear();
     s.style.animationDelay=(-Math.random()*dur)+'s';
     host.appendChild(s);
   }
+})();
+
+// Scroll reveal — emil-design-eng discipline: subtle, staggered, once
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+
+  // Groups where stagger by index within parent is meaningful
+  document.querySelectorAll('.stats .stat').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('.beyond > *').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('.contact-list > *').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('.skills-grid > *').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('#experience .entry').forEach((el,i)=>el.style.setProperty('--i',i));
+  document.querySelectorAll('#projects .entry').forEach((el,i)=>el.style.setProperty('--i',i));
+
+  // Elements that get the soft (opacity-only) fade — hero pieces sequence in
+  const softTargets=[
+    '.hero-eyebrow','.hero h1','.hero-lede','.hero-meta','.cta-row','.hero-photo'
+  ];
+  softTargets.forEach((sel,i)=>{
+    const el=document.querySelector(sel);
+    if(!el)return;
+    el.classList.add('reveal-soft');
+    el.style.setProperty('--i',i);
+  });
+
+  // Everything else — translateY + fade
+  const revealTargets=document.querySelectorAll(
+    '.sec-label, .sec-title, .stats, .stat, .entry, .skill-group, .beyond-card, .contact-list a'
+  );
+  revealTargets.forEach(el=>el.classList.add('reveal'));
+
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+
+  document.querySelectorAll('.reveal, .reveal-soft').forEach(el=>io.observe(el));
+})();
+
+// Stats count-up — animates numeric stats when scrolled into view (once)
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  const nodes=document.querySelectorAll('.stat-n');
+  const tracked=[];
+  nodes.forEach(el=>{
+    const t=el.firstChild;
+    if(!t||t.nodeType!==3)return;
+    const raw=t.nodeValue.trim();
+    const target=parseFloat(raw);
+    if(isNaN(target))return;
+    tracked.push({el,target,orig:raw,decimals:(raw.split('.')[1]||'').length,textNode:t});
+    t.nodeValue='0';
+  });
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const item=tracked.find(x=>x.el===e.target);
+      if(!item)return;
+      const dur=1400,start=performance.now();
+      function tick(now){
+        const t=Math.min(1,(now-start)/dur);
+        const eased=1-Math.pow(1-t,3);
+        const v=item.target*eased;
+        item.textNode.nodeValue=item.decimals?v.toFixed(item.decimals):Math.round(v).toString();
+        if(t<1)requestAnimationFrame(tick);
+        else item.textNode.nodeValue=item.orig;
+      }
+      requestAnimationFrame(tick);
+      io.unobserve(e.target);
+    });
+  },{threshold:.5});
+  tracked.forEach(x=>io.observe(x.el));
+})();
+
+// Scroll progress bar
+(function(){
+  const bar=document.getElementById('progress');
+  let ticking=false;
+  function update(){
+    const h=document.documentElement;
+    const scrolled=(h.scrollTop||document.body.scrollTop);
+    const height=(h.scrollHeight||document.body.scrollHeight)-h.clientHeight;
+    const p=height>0?scrolled/height:0;
+    bar.style.transform='scaleX('+p+')';
+    ticking=false;
+  }
+  window.addEventListener('scroll',()=>{
+    if(!ticking){requestAnimationFrame(update);ticking=true;}
+  },{passive:true});
+  update();
+})();
+
+// Cursor-reactive glow on Beyond Work cards
+(function(){
+  document.querySelectorAll('.beyond-card').forEach(card=>{
+    card.addEventListener('pointermove',(e)=>{
+      const r=card.getBoundingClientRect();
+      card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+      card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
 })();
 </script>
 </body>
