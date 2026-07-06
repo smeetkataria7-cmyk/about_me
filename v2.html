@@ -185,7 +185,7 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 /* ============ EXPERIENCE STACK DECK ============ */
 .deck{position:relative;}
 .deck-card{background:var(--card-2);border:1px solid var(--border);border-radius:24px;padding:52px 48px;
-  position:relative;margin-bottom:26px;box-shadow:0 -14px 50px rgba(0,0,0,.35);will-change:transform;}
+  position:sticky;top:110px;margin-bottom:26px;box-shadow:0 -14px 50px rgba(0,0,0,.35);will-change:transform;}
 @media(max-width:720px){.deck-card{padding:36px 26px;}}
 .deck-card .entry-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:14px;}
 .entry-title{font-size:1.35rem;font-weight:700;letter-spacing:-.015em;}
@@ -897,9 +897,9 @@ if(!reduce&&hasGsap){
       {clipPath:'inset(0% 0% 0% 0% round 24px)',y:0,opacity:1,duration:1.1,ease:'expo.out',
         scrollTrigger:{trigger:card,start:'top 92%',toggleActions:'play none none reverse'}});
     if(i<deckCards.length-1){
-      gsap.to(card,{scale:.92-((deckCards.length-2-i)*.015),opacity:.45,
-        transformOrigin:'center top',ease:'none',
-        scrollTrigger:{trigger:deckCards[i+1],start:'top 90%',end:'top 35%',scrub:true}});
+      // next card slides over this one (sticky); this one just settles back — no fade, stays readable
+      gsap.to(card,{scale:.96,transformOrigin:'center top',ease:'none',
+        scrollTrigger:{trigger:deckCards[i+1],start:'top 80%',end:'top 30%',scrub:true}});
     }
   });
 
