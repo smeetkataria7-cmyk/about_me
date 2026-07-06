@@ -172,9 +172,9 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 .stat:hover::before{opacity:1;}
 .stat{min-height:150px;display:flex;flex-direction:column;justify-content:center;}
 .stat-n{font-size:2.3rem;font-weight:800;letter-spacing:-.03em;color:var(--sec,var(--accent));line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.stat-n span{font-size:.95rem;font-weight:500;color:var(--ink2);margin-left:5px;}
-.stat-n .count{font-size:inherit;font-weight:inherit;color:inherit;margin-left:0;
-  display:inline-flex;overflow:hidden;height:1em;line-height:1;vertical-align:baseline;}
+.stat-n>span:not(.count){font-size:.95rem;font-weight:500;color:var(--ink2);margin-left:5px;}
+.stat-n .count{display:inline-flex;overflow:hidden;height:1em;line-height:1;vertical-align:baseline;}
+.count .digit,.count .digit span,.count .sep{font:inherit;color:inherit;margin:0;letter-spacing:0;}
 .count .digit{display:inline-block;height:1em;overflow:hidden;}
 .count .digit>span{display:block;will-change:transform;}
 .count .digit>span>span{display:block;height:1em;}
