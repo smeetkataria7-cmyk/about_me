@@ -109,8 +109,9 @@ main{position:relative;z-index:2;}
 .hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
 .hero-inner{text-align:center;max-width:1200px;padding:0 32px;will-change:transform,opacity;}
 .hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:30px;}
-.hero h1{font-size:clamp(3.4rem,11vw,9rem);font-weight:700;line-height:.95;letter-spacing:-.045em;margin-bottom:8px;}
+.hero h1{font-size:clamp(2.5rem,11vw,9rem);font-weight:700;line-height:.95;letter-spacing:-.045em;margin-bottom:8px;}
 .hero h1 .line{display:block;overflow:hidden;padding-bottom:.08em;}
+.hero h1 .hword{display:inline-block;white-space:nowrap;}
 .hero h1 .char{display:inline-block;will-change:transform;}
 .hero h1 em{color:var(--accent);font-weight:400;letter-spacing:-.03em;}
 .hero-lede{font-size:clamp(1rem,1.6vw,1.25rem);color:var(--ink2);max-width:600px;margin:28px auto 0;}
@@ -198,7 +199,8 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 .deck-num{font-family:'Fraunces',Georgia,serif;font-style:italic;font-size:1rem;color:var(--sec,var(--accent));margin-bottom:16px;display:block;}
 
 /* ============ HORIZONTAL PROJECTS RAIL ============ */
-#projects{overflow:visible;}
+/* overflow:hidden clips the giant watermark; position:fixed pinning is unaffected (no transform on the section itself) */
+#projects{overflow:hidden;}
 .rail-head{max-width:1060px;margin:0 auto;padding:150px 32px 0;position:relative;z-index:2;}
 .rail-wrap{position:relative;overflow:hidden;}
 .rail{display:flex;gap:28px;padding:80px 32px 150px;will-change:transform;width:max-content;align-items:stretch;}
@@ -713,17 +715,24 @@ if(!reduce&&hasGsap){
   if(lenis)lenis.stop();
 
   /* ============ hero char split (before the intro timeline reads .char) ============ */
+  /* chars are grouped into .hword spans so a narrow viewport wraps between words, never mid-word */
   document.querySelectorAll('#heroTitle .line').forEach(line=>{
     const text=line.textContent;
     const isEm=line.querySelector('em');
     line.innerHTML='';
     const holder=isEm?document.createElement('em'):line;
     if(isEm)line.appendChild(holder);
-    [...text].forEach(ch=>{
-      const s=document.createElement('span');
-      s.className='char';
-      s.innerHTML=ch===' '?'&nbsp;':ch;
-      holder.appendChild(s);
+    text.split(' ').forEach((word,wi,arr)=>{
+      const w=document.createElement('span');
+      w.className='hword';
+      [...word].forEach(ch=>{
+        const s=document.createElement('span');
+        s.className='char';
+        s.textContent=ch;
+        w.appendChild(s);
+      });
+      holder.appendChild(w);
+      if(wi<arr.length-1)holder.appendChild(document.createTextNode(' '));
     });
   });
 
@@ -813,10 +822,10 @@ if(!reduce&&hasGsap){
           wrap.appendChild(inner);title.appendChild(wrap);
         });
       }else{
+        // element node (em): wrap as-is; spacing comes from the surrounding text nodes
         const wrap=document.createElement('span');wrap.className='word';
         const inner=document.createElement('span');inner.appendChild(node.cloneNode(true));
         wrap.appendChild(inner);title.appendChild(wrap);
-        title.appendChild(document.createTextNode(' '));
       }
     });
     gsap.from(title.querySelectorAll('.word>span'),{
