@@ -144,7 +144,12 @@ section{position:relative;overflow:hidden;}
 .stat{min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;}
 .stat-n{font-size:2.3rem;font-weight:800;letter-spacing:-.03em;color:var(--sec,var(--accent));line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .stat-n span{font-size:.95rem;font-weight:500;color:var(--ink2);margin-left:5px;}
-.stat-n .count{font-size:inherit;font-weight:inherit;color:inherit;margin-left:0;}
+.stat-n .count{font-size:inherit;font-weight:inherit;color:inherit;margin-left:0;
+  display:inline-flex;overflow:hidden;height:1em;line-height:1;vertical-align:baseline;}
+.count .digit{display:inline-block;height:1em;overflow:hidden;}
+.count .digit>span{display:block;will-change:transform;}
+.count .digit>span>span{display:block;height:1em;}
+.count .sep{display:inline-block;height:1em;}
 .stat-l{font-size:.82rem;color:var(--ink2);margin-top:10px;}
 
 /* ============ EXPERIENCE STACK DECK ============ */
@@ -670,13 +675,41 @@ if(!reduce&&hasGsap){
       scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}});
   });
 
-  /* ============ stat counters ============ */
+  /* ============ stat counters — odometer digit roll ============ */
   document.querySelectorAll('.count').forEach(el=>{
-    const target=parseFloat(el.dataset.count), dec=parseInt(el.dataset.dec||'0');
-    const obj={v:0};
-    gsap.to(obj,{v:target,duration:1.8,ease:'power2.out',
-      onUpdate:()=>{el.textContent=obj.v.toFixed(dec);},
-      scrollTrigger:{trigger:el,start:'top 90%',once:true}});
+    const dec=parseInt(el.dataset.dec||'0');
+    const final=parseFloat(el.dataset.count).toFixed(dec);
+    el.textContent='';
+    const strips=[];
+    [...final].forEach(ch=>{
+      if(/\d/.test(ch)){
+        const d=document.createElement('span');d.className='digit';
+        const strip=document.createElement('span');
+        for(let n=0;n<=9;n++){
+          const row=document.createElement('span');row.textContent=n;strip.appendChild(row);
+        }
+        d.appendChild(strip);el.appendChild(d);
+        strips.push({strip,target:parseInt(ch)});
+      }else{
+        const s=document.createElement('span');s.className='sep';s.textContent=ch;el.appendChild(s);
+      }
+    });
+    ScrollTrigger.create({
+      trigger:el,start:'top 90%',once:true,
+      onEnter:()=>{
+        strips.forEach((s,i)=>{
+          // spin through a full loop + land on target, later digits spin longer
+          gsap.fromTo(s.strip,{yPercent:0},{
+            yPercent:-(s.target*10),
+            duration:1.4+i*.25,delay:i*.08,ease:'expo.inOut',
+            onStart:()=>{
+              // quick pre-roll blur for speed feel
+              gsap.fromTo(s.strip,{filter:'blur(3px)'},{filter:'blur(0px)',duration:1.4+i*.25,ease:'power2.out'});
+            }
+          });
+        });
+      }
+    });
   });
 
   /* ============ EXPERIENCE STACK DECK — cards pile & compress ============ */
