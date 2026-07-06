@@ -141,7 +141,8 @@ section{position:relative;overflow:hidden;}
 .stat::before{content:'';position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(212,114,86,.14),transparent 45%);opacity:0;transition:opacity .3s;}
 .stat:hover{border-color:rgba(212,114,86,.35);}
 .stat:hover::before{opacity:1;}
-.stat-n{font-size:2.6rem;font-weight:800;letter-spacing:-.03em;color:var(--sec,var(--accent));line-height:1;}
+.stat{min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;}
+.stat-n{font-size:2.3rem;font-weight:800;letter-spacing:-.03em;color:var(--sec,var(--accent));line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;}
 .stat-n span{font-size:.95rem;font-weight:500;color:var(--ink2);margin-left:5px;}
 .stat-l{font-size:.82rem;color:var(--ink2);margin-top:10px;}
 
@@ -650,11 +651,14 @@ if(!reduce&&hasGsap){
     });
   });
 
-  /* ============ generic reveals ============ */
+  /* ============ generic reveals (stats handled as one batch below) ============ */
   document.querySelectorAll('[data-reveal]').forEach(el=>{
+    if(el.classList.contains('stat'))return;
     gsap.from(el,{y:60,opacity:0,duration:1,ease:'power3.out',
       scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none reverse'}});
   });
+  gsap.from('.stats .stat',{y:60,opacity:0,duration:.9,ease:'power3.out',stagger:.09,
+    scrollTrigger:{trigger:'.stats',start:'top 88%',toggleActions:'play none none reverse'}});
 
   /* ============ skills: 3D flip-in ============ */
   document.querySelectorAll('[data-flip]').forEach((el,i)=>{
