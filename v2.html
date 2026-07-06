@@ -61,6 +61,17 @@ em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:400;}
   background:radial-gradient(circle,rgba(212,114,86,.15),transparent 65%);
   mix-blend-mode:screen;transform:translate(-50%,-50%);left:-600px;top:-600px;will-change:left,top;}
 
+/* ============ CUSTOM CURSOR ============ */
+@media(hover:hover) and (pointer:fine){
+  .cursor-dot{position:fixed;width:7px;height:7px;border-radius:50%;background:var(--accent);z-index:9998;pointer-events:none;
+    transform:translate(-50%,-50%);left:-100px;top:-100px;}
+  .cursor-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(212,114,86,.55);z-index:9997;pointer-events:none;
+    transform:translate(-50%,-50%);left:-100px;top:-100px;
+    transition:width .3s var(--ease),height .3s var(--ease),border-color .3s,background .3s;}
+  .cursor-ring.is-hover{width:64px;height:64px;border-color:rgba(212,114,86,.9);background:rgba(212,114,86,.08);}
+}
+@media(pointer:coarse){.cursor-dot,.cursor-ring{display:none;}}
+
 .progress-bar{position:fixed;top:0;left:0;height:3px;width:0%;z-index:999;pointer-events:none;
   background:linear-gradient(90deg,var(--c-experience),var(--c-projects),var(--c-skills),var(--c-beyond),var(--c-contact));
   box-shadow:0 0 14px rgba(212,114,86,.6);}
@@ -71,7 +82,9 @@ em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:400;}
   padding:18px 44px;
   background:rgba(26,21,32,.66);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
   border-bottom:1px solid var(--border);
-  transform:translateY(-100%);}
+  transform:translateY(-100%);will-change:transform;}
+.tb-nav a.active{color:var(--ink);}
+.tb-nav a.active::after{transform:scaleX(1);transform-origin:left;}
 .tb-logo{font-weight:600;font-size:1.05rem;letter-spacing:-.02em;cursor:pointer;}
 .tb-logo em{color:var(--accent);margin-left:1px;}
 .tb-nav{display:flex;gap:30px;}
@@ -111,6 +124,13 @@ main{position:relative;z-index:2;}
   display:flex;flex-direction:column;align-items:center;gap:10px;}
 .scroll-hint::after{content:'';width:1px;height:44px;background:linear-gradient(180deg,var(--accent),transparent);animation:hintDrop 1.8s var(--ease) infinite;}
 @keyframes hintDrop{0%{transform:scaleY(0);transform-origin:top;}45%{transform:scaleY(1);transform-origin:top;}55%{transform:scaleY(1);transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ============ STATEMENT (editorial interlude) ============ */
+#statement .container{padding:200px 32px;}
+.statement-text{font-size:clamp(1.7rem,3.6vw,2.9rem);font-weight:500;letter-spacing:-.025em;line-height:1.35;max-width:900px;}
+.statement-text .w{color:var(--ink3);}
+.statement-text em{color:var(--accent);font-weight:400;}
+.statement-sig{margin-top:36px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);}
 
 /* ============ WATERMARK (giant outline text behind sections) ============ */
 .watermark{position:absolute;top:6%;left:0;white-space:nowrap;z-index:0;pointer-events:none;
@@ -235,7 +255,18 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 .marquee-track span{flex-shrink:0;}
 .marquee-track span::after{content:'✦';margin-left:64px;color:var(--accent);font-style:normal;font-size:.95rem;}
 
-footer{text-align:center;padding:54px 32px;color:var(--ink3);font-size:.82rem;position:relative;z-index:2;}
+footer{position:relative;z-index:2;overflow:hidden;padding:90px 44px 40px;}
+.foot-giant{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:300;text-align:center;
+  font-size:clamp(5rem,18vw,15rem);line-height:.85;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1px rgba(239,233,224,.14);user-select:none;will-change:transform;}
+.foot-row{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;
+  margin-top:60px;padding-top:26px;border-top:1px solid var(--border);
+  color:var(--ink3);font-size:.8rem;}
+.foot-time{display:flex;align-items:center;gap:9px;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--ink2);}
+.foot-time .dot{width:7px;height:7px;border-radius:50%;background:#8ba76d;box-shadow:0 0 0 0 rgba(139,167,109,.6);animation:pulse 2.2s ease-out infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(139,167,109,.55);}70%{box-shadow:0 0 0 9px rgba(139,167,109,0);}100%{box-shadow:0 0 0 0 rgba(139,167,109,0);}}
+.back-top{color:var(--ink2);font-weight:500;transition:color .25s;}
+.back-top:hover{color:var(--accent);}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}
@@ -254,6 +285,8 @@ footer{text-align:center;padding:54px 32px;color:var(--ink3);font-size:.82rem;po
 
 <div class="bg-mesh" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span></div>
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 <div class="progress-bar" id="progress" aria-hidden="true"></div>
 
 <nav id="topbar">
@@ -291,6 +324,13 @@ footer{text-align:center;padding:54px 32px;color:var(--ink3);font-size:.82rem;po
   </div>
   <div class="scroll-hint">Scroll</div>
 </header>
+
+<section id="statement" data-bg="#1a1520">
+  <div class="container">
+    <p class="statement-text" id="statementText">I like the unglamorous parts of software — the reports that run themselves, the pipelines nobody notices, the <em>automation</em> that quietly gives a team its Friday evenings back. Good data work should feel <em>invisible.</em></p>
+    <div class="statement-sig">— what I'm about</div>
+  </div>
+</section>
 
 <section id="experience" data-bg="#1a1520">
   <div class="watermark" data-wm>Experience — Experience — Experience —</div>
@@ -483,7 +523,12 @@ footer{text-align:center;padding:54px 32px;color:var(--ink3);font-size:.82rem;po
 </div>
 
 <footer>
-  © <span id="yr"></span> Smeet Kataria · Thane, Mumbai, India
+  <div class="foot-giant" id="footGiant" aria-hidden="true">SMEET</div>
+  <div class="foot-row">
+    <span>© <span id="yr"></span> Smeet Kataria · Thane, Mumbai</span>
+    <span class="foot-time"><span class="dot"></span>Open to work · Mumbai <span id="localTime"></span></span>
+    <a class="back-top" href="#top">Back to top ↑</a>
+  </div>
 </footer>
 
 </main>
@@ -531,6 +576,31 @@ if(!coarse){
   addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;},{passive:true});
   (function loop(){x+=(tx-x)*.09;y+=(ty-y)*.09;g.style.left=x+'px';g.style.top=y+'px';requestAnimationFrame(loop);})();
 }
+
+/* ============ custom cursor (dot + trailing ring) ============ */
+if(!coarse){
+  const dot=document.getElementById('cursorDot'),ring=document.getElementById('cursorRing');
+  let rx=-100,ry=-100,tx=-100,ty=-100;
+  addEventListener('mousemove',e=>{
+    tx=e.clientX;ty=e.clientY;
+    dot.style.left=tx+'px';dot.style.top=ty+'px';
+  },{passive:true});
+  (function loop(){rx+=(tx-rx)*.16;ry+=(ty-ry)*.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.btn,.stat,.proj-card,.skill-group,.beyond-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('is-hover'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('is-hover'));
+  });
+}
+
+/* ============ Mumbai clock ============ */
+(function(){
+  const el=document.getElementById('localTime');
+  if(!el)return;
+  function tick(){
+    el.textContent=new Intl.DateTimeFormat('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:'Asia/Kolkata'}).format(new Date());
+  }
+  tick();setInterval(tick,30000);
+})();
 
 /* ============ stat highlight follow ============ */
 document.querySelectorAll('.stat').forEach(el=>{
@@ -609,7 +679,28 @@ if(!reduce&&hasGsap){
     .from('#heroTitle .char',{yPercent:110,duration:1.1,ease:'expo.out',stagger:.02},seen?0:'-=.45')
     .from('.hero-photo',{scale:.55,opacity:0,duration:1,ease:'expo.out'},'<.1')
     .from(['.hero-eyebrow','.hero-lede','.hero-meta','.cta-row'],{y:36,opacity:0,duration:.9,ease:'power3.out',stagger:.1},'<.25')
-    .to('#topbar',{y:0,duration:.8,ease:'expo.out'},'<.2');
+    .to('#topbar',{yPercent:0,duration:.8,ease:'expo.out'},'<.2');
+
+  /* ============ topbar: hide on scroll down, return on scroll up ============ */
+  let tbHidden=false;
+  ScrollTrigger.create({
+    start:'top top',end:'max',
+    onUpdate:self=>{
+      if(scrollY<120){if(tbHidden){tbHidden=false;gsap.to('#topbar',{yPercent:0,duration:.5,ease:'power3.out'});}return;}
+      if(self.direction===1&&!tbHidden){tbHidden=true;gsap.to('#topbar',{yPercent:-100,duration:.5,ease:'power3.in'});}
+      else if(self.direction===-1&&tbHidden){tbHidden=false;gsap.to('#topbar',{yPercent:0,duration:.5,ease:'power3.out'});}
+    }
+  });
+
+  /* ============ active nav link ============ */
+  document.querySelectorAll('.tb-nav a[href^="#"]').forEach(link=>{
+    const sec=document.querySelector(link.getAttribute('href'));
+    if(!sec)return;
+    ScrollTrigger.create({
+      trigger:sec,start:'top 55%',end:'bottom 55%',
+      onToggle:self=>link.classList.toggle('active',self.isActive)
+    });
+  });
 
   /* ============ hero pinned exit ============ */
   gsap.to('#heroInner',{
@@ -721,8 +812,10 @@ if(!reduce&&hasGsap){
   /* ============ EXPERIENCE STACK DECK — cards pile & compress ============ */
   const deckCards=gsap.utils.toArray('.deck-card');
   deckCards.forEach((card,i)=>{
-    gsap.from(card,{y:120,opacity:0,scale:.94,duration:1,ease:'expo.out',
-      scrollTrigger:{trigger:card,start:'top 92%',toggleActions:'play none none reverse'}});
+    gsap.fromTo(card,
+      {clipPath:'inset(16% 8% 16% 8% round 24px)',y:90,opacity:0},
+      {clipPath:'inset(0% 0% 0% 0% round 24px)',y:0,opacity:1,duration:1.1,ease:'expo.out',
+        scrollTrigger:{trigger:card,start:'top 92%',toggleActions:'play none none reverse'}});
     if(i<deckCards.length-1){
       gsap.to(card,{scale:.92-((deckCards.length-2-i)*.015),opacity:.45,
         transformOrigin:'center top',ease:'none',
@@ -776,6 +869,48 @@ if(!reduce&&hasGsap){
       track.style.transform=`translateX(${x}px)`;
     });
   })();
+
+  /* ============ statement: words brighten as you scroll through ============ */
+  (function(){
+    const p=document.getElementById('statementText');
+    if(!p)return;
+    const nodes=[...p.childNodes];
+    p.innerHTML='';
+    const words=[];
+    function addWord(content,isEm){
+      const s=document.createElement('span');s.className='w';
+      if(isEm){const e=document.createElement('em');e.textContent=content;s.appendChild(e);}
+      else s.textContent=content;
+      p.appendChild(s);p.appendChild(document.createTextNode(' '));
+      words.push({el:s,target:isEm?'#d47256':'#efe9e0'});
+    }
+    nodes.forEach(node=>{
+      if(node.nodeType===3){node.textContent.trim().split(/\s+/).forEach(w=>{if(w)addWord(w,false);});}
+      else if(node.tagName==='EM'){node.textContent.trim().split(/\s+/).forEach(w=>{if(w)addWord(w,true);});}
+    });
+    words.forEach(w=>{w.el.querySelectorAll('em').forEach(e=>e.style.color='inherit');});
+    gsap.to(words.map(w=>w.el),{
+      color:i=>words[i].target,ease:'none',stagger:.35,duration:1,
+      scrollTrigger:{trigger:'#statement',start:'top 70%',end:'bottom 75%',scrub:.6}
+    });
+  })();
+
+  /* ============ footer giant name rises ============ */
+  gsap.from('#footGiant',{yPercent:55,opacity:0,ease:'none',
+    scrollTrigger:{trigger:'footer',start:'top bottom',end:'bottom bottom',scrub:.8}});
+
+  /* ============ velocity skew — content shears slightly with scroll speed ============ */
+  /* NOTE: must never transform an ancestor of the pinned rail — that breaks position:fixed pinning */
+  if(lenis){
+    const skewEls=gsap.utils.toArray('section .container, .rail, .foot-giant');
+    let skew=0;
+    lenis.on('scroll',e=>{skew=gsap.utils.clamp(-1.3,1.3,e.velocity*.05);});
+    gsap.ticker.add(()=>{
+      skew*=.88;
+      if(Math.abs(skew)<.01)skew=0;
+      gsap.set(skewEls,{skewY:skew,transformOrigin:'center center',force3D:true});
+    });
+  }
 
   /* ============ mesh parallax ============ */
   gsap.to('.b1',{yPercent:24,ease:'none',scrollTrigger:{trigger:'main',start:'top top',end:'bottom bottom',scrub:2}});
