@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smeet Kataria — AI & Data Science</title>
 <meta name="description" content="Smeet Kataria — AI & Data Science student, Mumbai. Data automation, reporting workflows, and the software that connects them.">
+<meta name="theme-color" content="#1a1520">
+<meta property="og:title" content="Smeet Kataria — AI & Data Science">
+<meta property="og:description" content="Second-year B.Tech student in Mumbai. Data automation, reporting workflows, and the software that connects them.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://smeetkataria7-cmyk.github.io/about_me/v2.html">
+<meta property="og:image" content="https://smeetkataria7-cmyk.github.io/about_me/profile.jpeg">
+<meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231a1520'/><text x='50' y='68' font-size='60' font-family='Georgia' font-style='italic' fill='%23d47256' text-anchor='middle'>S</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +40,8 @@ body{
 }
 ::selection{background:var(--accent);color:var(--bg);}
 a{color:inherit;text-decoration:none;}
+a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px;}
+@media(hover:hover) and (pointer:fine){body,a,button,.btn{cursor:none;}}
 em{font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:400;}
 ::-webkit-scrollbar{width:10px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
@@ -203,6 +212,52 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 .proj-card h3{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;padding-right:80px;position:relative;}
 .proj-stack{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c-projects);letter-spacing:.06em;margin-bottom:18px;position:relative;}
 .proj-card p{color:var(--ink2);font-size:.94rem;position:relative;}
+/* project card miniatures — animated CSS scenes in place of screenshots */
+.proj-viz{height:170px;border-radius:14px;border:1px solid var(--border);background:rgba(239,233,224,.02);
+  margin-bottom:26px;position:relative;overflow:hidden;}
+/* VAELO: mini dashboard */
+.viz-dash{display:flex;gap:12px;padding:14px;height:100%;}
+.viz-side{width:54px;display:flex;flex-direction:column;gap:8px;padding-top:4px;}
+.viz-side span{height:8px;border-radius:4px;background:rgba(239,233,224,.09);}
+.viz-side span:first-child{background:rgba(139,167,109,.55);}
+.viz-main{flex:1;display:flex;align-items:flex-end;gap:10px;padding:10px 6px 0;}
+.viz-main span{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,rgba(139,167,109,.65),rgba(139,167,109,.18));
+  transform-origin:bottom;animation:vBar 3.4s ease-in-out infinite alternate;}
+.viz-main span:nth-child(1){height:45%;}
+.viz-main span:nth-child(2){height:75%;animation-delay:.4s;}
+.viz-main span:nth-child(3){height:55%;animation-delay:.8s;}
+.viz-main span:nth-child(4){height:88%;animation-delay:1.2s;}
+.viz-main span:nth-child(5){height:62%;animation-delay:1.6s;}
+@keyframes vBar{to{transform:scaleY(.7);}}
+/* Tribal Zone: product grid wave */
+.viz-shop{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:10px;padding:14px;height:100%;}
+.viz-shop span{border-radius:8px;background:rgba(239,233,224,.05);animation:tilePulse 3.6s ease-in-out infinite;}
+.viz-shop span:nth-child(2){animation-delay:.5s;}
+.viz-shop span:nth-child(3){animation-delay:1s;}
+.viz-shop span:nth-child(4){animation-delay:1.5s;}
+.viz-shop span:nth-child(5){animation-delay:2s;}
+.viz-shop span:nth-child(6){animation-delay:2.5s;}
+@keyframes tilePulse{0%,100%{background:rgba(239,233,224,.05);}50%{background:rgba(139,167,109,.28);}}
+/* DVOC: chat bot */
+.viz-chat{padding:18px;display:flex;flex-direction:column;gap:10px;height:100%;justify-content:center;}
+.viz-chat .bub{height:26px;border-radius:12px;}
+.bub.in{background:rgba(239,233,224,.07);border-top-left-radius:4px;align-self:flex-start;width:58%;}
+.bub.out{background:rgba(139,167,109,.28);border-top-right-radius:4px;align-self:flex-end;width:44%;}
+.bub.typing{display:flex;gap:5px;align-items:center;justify-content:center;align-self:flex-start;
+  background:rgba(239,233,224,.07);border-top-left-radius:4px;width:58px;}
+.bub.typing i{width:6px;height:6px;border-radius:50%;background:rgba(239,233,224,.5);animation:typeDot 1.2s ease-in-out infinite;}
+.bub.typing i:nth-child(2){animation-delay:.15s;}
+.bub.typing i:nth-child(3){animation-delay:.3s;}
+@keyframes typeDot{0%,60%,100%{transform:translateY(0);opacity:.4;}30%{transform:translateY(-4px);opacity:1;}}
+/* Miraaya: message flow */
+.viz-flow{height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:relative;}
+.viz-flow::before{content:'';position:absolute;left:46px;right:46px;top:50%;height:1.5px;background:rgba(239,233,224,.12);}
+.viz-flow .node{width:36px;height:36px;border-radius:10px;border:1.5px solid rgba(139,167,109,.6);background:var(--card);position:relative;z-index:1;}
+.viz-flow .node.mid{border-radius:50%;}
+.viz-flow .pkt{position:absolute;top:50%;left:46px;width:8px;height:8px;margin-top:-4px;border-radius:50%;
+  background:#8ba76d;box-shadow:0 0 12px rgba(139,167,109,.8);animation:pkt 2.6s ease-in-out infinite;}
+@keyframes pkt{0%{left:46px;opacity:0;}12%{opacity:1;}88%{opacity:1;}100%{left:calc(100% - 54px);opacity:0;}}
+
 .rail-progress{position:absolute;bottom:84px;left:32px;right:32px;height:2px;background:rgba(239,233,224,.07);border-radius:2px;overflow:hidden;}
 .rail-progress span{display:block;height:100%;width:0%;background:var(--c-projects);border-radius:2px;}
 .rail-count{position:absolute;bottom:100px;right:32px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--c-projects);letter-spacing:.2em;}
@@ -403,24 +458,40 @@ footer{position:relative;z-index:2;overflow:hidden;padding:90px 44px 40px;}
     <div class="rail" id="rail">
       <div class="proj-card">
         <div class="proj-num">01</div>
+        <div class="proj-viz" aria-hidden="true"><div class="viz-dash">
+          <div class="viz-side"><span></span><span></span><span></span><span></span></div>
+          <div class="viz-main"><span></span><span></span><span></span><span></span><span></span></div>
+        </div></div>
         <h3>VAELO — Agency Operating System</h3>
         <div class="proj-stack">Next.js · TypeScript · Supabase</div>
         <p>Internal platform running the full client lifecycle for a digital marketing agency — lead capture, proposals, onboarding, creative delivery, invoicing, and a mobile-first client portal. Designed around an Indian-market stack (Razorpay, WhatsApp-first comms, INR).</p>
       </div>
       <div class="proj-card">
         <div class="proj-num">02</div>
+        <div class="proj-viz" aria-hidden="true"><div class="viz-shop">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div></div>
         <h3>Tribal Zone — Shopify Storefront</h3>
         <div class="proj-stack">Shopify Liquid · HTML/CSS/JS</div>
         <p>Full Shopify-ready storefront for an Indian fashion-jewellery brand: homepage, 6 collection pages with client-side filtering, product detail page with hover-zoom gallery, cart drawer, and Liquid sections ready to deploy. Iterated across 40+ theme versions before live cutover.</p>
       </div>
       <div class="proj-card">
         <div class="proj-num">03</div>
+        <div class="proj-viz" aria-hidden="true"><div class="viz-chat">
+          <div class="bub in"></div>
+          <div class="bub out"></div>
+          <div class="bub typing"><i></i><i></i><i></i></div>
+        </div></div>
         <h3>DVOC — Agency Website &amp; Support Bot</h3>
         <div class="proj-stack">Next.js · Node.js · WhatsApp API</div>
         <p>Built the full DVOC agency website end-to-end — design, frontend, content, and deployment — alongside an AI-assisted WhatsApp support bot answering customer queries from a curated knowledge base with routing and human-agent fallback.</p>
       </div>
       <div class="proj-card">
         <div class="proj-num">04</div>
+        <div class="proj-viz" aria-hidden="true"><div class="viz-flow">
+          <div class="node"></div><div class="node mid"></div><div class="node"></div>
+          <div class="pkt"></div>
+        </div></div>
         <h3>Miraaya WhatsApp Automation</h3>
         <div class="proj-stack">Node.js · Proxy server</div>
         <p>WhatsApp automation stack for a retail client — proxy server, message handler, and a packaged proposal covering scope, architecture, and cost composition. Delivered as a deployable build plus client-ready documentation.</p>
