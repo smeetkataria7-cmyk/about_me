@@ -201,9 +201,21 @@ section{position:relative;overflow:hidden;scroll-margin-top:80px;}
 /* ============ HORIZONTAL PROJECTS RAIL ============ */
 /* overflow:hidden clips the giant watermark; position:fixed pinning is unaffected (no transform on the section itself) */
 #projects{overflow:hidden;}
-.rail-head{max-width:1060px;margin:0 auto;padding:150px 32px 0;position:relative;z-index:2;}
+.rail-head{max-width:1060px;margin:0 auto;padding:150px 32px 0;position:relative;z-index:2;width:100%;}
 .rail-wrap{position:relative;overflow:hidden;}
 .rail{display:flex;gap:28px;padding:80px 32px 150px;will-change:transform;width:max-content;align-items:stretch;}
+/* desktop: the whole section pins as one composed 100vh screen — title on top, cards centered, progress in view */
+@media(min-width:901px){
+  #projects{height:100vh;display:flex;flex-direction:column;justify-content:center;}
+  #projects .rail-head{padding:84px 32px 0;}
+  #projects .rail{padding:28px 32px 84px;}
+  #projects .proj-viz{height:clamp(80px,13vh,140px);margin-bottom:20px;}
+  #projects .proj-card{padding:30px 34px;}
+  #projects .proj-card h3{font-size:1.3rem;}
+  #projects .proj-card p{font-size:.88rem;}
+  #projects .rail-progress{bottom:40px;}
+  #projects .rail-count{bottom:56px;}
+}
 .proj-card{width:min(500px,82vw);flex-shrink:0;background:var(--card);border:1px solid var(--border);border-radius:24px;
   padding:46px 42px;position:relative;overflow:hidden;
   transition:border-color .3s,box-shadow .45s var(--ease);will-change:transform;}
@@ -812,20 +824,25 @@ if(!reduce&&hasGsap){
   document.querySelectorAll('[data-split]').forEach(title=>{
     const nodes=[...title.childNodes];
     title.innerHTML='';
+    let lastInner=null;
     nodes.forEach(node=>{
       if(node.nodeType===3){
         node.textContent.split(/(\s+)/).forEach(w=>{
           if(!w)return;
           if(/^\s+$/.test(w)){title.appendChild(document.createTextNode(' '));return;}
+          // bare punctuation hugs the previous word's box instead of floating in its own
+          if(/^[.,!?;:]+$/.test(w)&&lastInner){lastInner.appendChild(document.createTextNode(w));return;}
           const wrap=document.createElement('span');wrap.className='word';
           const inner=document.createElement('span');inner.textContent=w;
           wrap.appendChild(inner);title.appendChild(wrap);
+          lastInner=inner;
         });
       }else{
         // element node (em): wrap as-is; spacing comes from the surrounding text nodes
         const wrap=document.createElement('span');wrap.className='word';
         const inner=document.createElement('span');inner.appendChild(node.cloneNode(true));
         wrap.appendChild(inner);title.appendChild(wrap);
+        lastInner=inner;
       }
     });
     gsap.from(title.querySelectorAll('.word>span'),{
@@ -906,12 +923,12 @@ if(!reduce&&hasGsap){
   /* ============ HORIZONTAL PROJECTS RAIL ============ */
   if(innerWidth>900){
     const rail=document.getElementById('rail');
-    const wrap=document.getElementById('railWrap');
+    const sec=document.getElementById('projects');
     const cards=gsap.utils.toArray('.proj-card');
     const dist=()=>rail.scrollWidth-innerWidth+64;
     gsap.to(rail,{x:()=>-dist(),ease:'none',
       scrollTrigger:{
-        trigger:wrap,start:'top top',end:()=>'+='+dist()*1.15,
+        trigger:sec,start:'top top',end:()=>'+='+dist()*1.15,
         pin:true,scrub:1,invalidateOnRefresh:true,anticipatePin:1,
         onUpdate:self=>{
           document.getElementById('railProg').style.width=(self.progress*100)+'%';
@@ -922,7 +939,7 @@ if(!reduce&&hasGsap){
     // inner parallax: numbers drift slower than cards
     cards.forEach(c=>{
       gsap.fromTo(c.querySelector('.proj-num'),{x:60},{x:-60,ease:'none',
-        scrollTrigger:{trigger:wrap,start:'top top',end:()=>'+='+dist()*1.15,scrub:1.5}});
+        scrollTrigger:{trigger:sec,start:'top top',end:()=>'+='+dist()*1.15,scrub:1.5}});
     });
   }else{
     document.querySelectorAll('.proj-card').forEach(el=>{
