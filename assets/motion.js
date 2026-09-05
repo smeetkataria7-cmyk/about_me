@@ -156,12 +156,17 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
   }
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){if(e.isIntersecting){show(e.target,true);io.unobserve(e.target);}});
-  },{rootMargin:'0px 0px -7% 0px',threshold:.05});
+  },{rootMargin:'0px 0px -15% 0px',threshold:0});
   revs.forEach(function(el){io.observe(el);});
+  /* Rescue only what is genuinely scrolled PAST — top above the viewport.
+     An earlier version swept at 93% of viewport height, which fired while the
+     element was still below the fold and pre-empted the observer on every
+     ordinary scroll, so the entrance played off-screen and the reader only
+     ever saw the finished state. */
   onScroll(function(){
     revs.forEach(function(el){
       if(el.dataset.shown)return;
-      if(el.getBoundingClientRect().top<innerHeight*.93){show(el,false);io.unobserve(el);}
+      if(el.getBoundingClientRect().top<0){show(el,false);io.unobserve(el);}
     });
   });
 })();
@@ -188,14 +193,21 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
     });
   });
   function light(t){t.querySelectorAll('.split').forEach(function(s){s.classList.add('on');});}
+  /* A one-line heading is short, so a plain threshold is met the instant it
+     peeks over the bottom edge and the letters rise off-screen. The negative
+     bottom margin pulls the trigger line up to ~78% of the viewport, so the
+     rise happens where it can be read. */
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){if(e.isIntersecting){light(e.target);io.unobserve(e.target);}});
-  },{threshold:.35});
+  },{threshold:0,rootMargin:'0px 0px -22% 0px'});
   titles.forEach(function(t){io.observe(t);});
+  /* same rule as the reveals: rescue only titles already scrolled past, and
+     leave ordinary scrolling to the observer, which fires at 35% visible —
+     where the letters actually rise in front of the reader */
   onScroll(function(){
     titles.forEach(function(t){
       if(t.querySelector('.split.on'))return;
-      if(t.getBoundingClientRect().top<innerHeight*.9){light(t);io.unobserve(t);}
+      if(t.getBoundingClientRect().top<0){light(t);io.unobserve(t);}
     });
   });
 })();
@@ -207,8 +219,16 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
   if(reduce){labels.forEach(function(l){l.classList.add('on');});return;}
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
-  },{threshold:.5});
+  },{threshold:0,rootMargin:'0px 0px -20% 0px'});
   labels.forEach(function(l){io.observe(l);});
+  /* the raised trigger line means a fast scroll can jump the gap entirely, so
+     these need the same already-passed rescue the reveals and titles have */
+  onScroll(function(){
+    labels.forEach(function(l){
+      if(l.classList.contains('on'))return;
+      if(l.getBoundingClientRect().top<0){l.classList.add('on');io.unobserve(l);}
+    });
+  });
 })();
 
 /* ── COUNT UP ── */

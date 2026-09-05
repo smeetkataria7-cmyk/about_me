@@ -748,15 +748,25 @@ var onScroll=M?M.onScroll:function(f){f();};
   var items=[].slice.call(doc.querySelectorAll('.sk-item[data-lvl]'));
   if(!items.length)return;
   if(reduce){items.forEach(function(li){li.querySelector('.meter i').style.width=li.dataset.lvl+'%';});return;}
+  function fill(li,stagger){
+    if(li.dataset.filled)return;
+    li.dataset.filled='1';
+    var bar=li.querySelector('.meter i');
+    bar.style.setProperty('--d',stagger?[].slice.call(li.parentNode.children).indexOf(li):0);
+    bar.style.width=li.dataset.lvl+'%';
+  }
   var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(!e.isIntersecting)return;
-      var li=e.target,bar=li.querySelector('.meter i');
-      bar.style.setProperty('--d',[].slice.call(li.parentNode.children).indexOf(li));
-      bar.style.width=li.dataset.lvl+'%';io.unobserve(li);
-    });
-  },{threshold:.35});
+    es.forEach(function(e){if(e.isIntersecting){fill(e.target,true);io.unobserve(e.target);}});
+  },{threshold:0,rootMargin:'0px 0px -18% 0px'});
   items.forEach(function(li){io.observe(li);});
+  /* a fast scroll can outrun the observer entirely — anything already passed
+     fills without its stagger rather than being left sitting at zero */
+  onScroll(function(){
+    items.forEach(function(li){
+      if(li.dataset.filled)return;
+      if(li.getBoundingClientRect().top<0){fill(li,false);io.unobserve(li);}
+    });
+  });
 })();
 
 /* ── HERO PARALLAX ── */
