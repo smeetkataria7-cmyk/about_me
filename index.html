@@ -238,6 +238,149 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
 
 /* ── CONTAINER ── */
 .container{max-width:880px;margin:0 auto;}
+
+/* ── GRAIN ── */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:5000;opacity:.22;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='3' type='fractalNoise'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");}
+
+/* ── CARD ARTWORK ──
+   A screenshot sits on top of the generated artwork when one exists. If the
+   file is missing the img removes itself and the SVG below is what shows, so
+   the rail never has a broken tile. */
+.card-img{background:linear-gradient(160deg,var(--surface-2),var(--surface));}
+.card-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
+  z-index:1;opacity:0;transition:opacity .7s var(--ease),transform .8s var(--ease);}
+.card-shot.ready{opacity:.88;}
+.card:hover .card-shot.ready{opacity:1;transform:scale(1.05);}
+.card-img::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,10,.15),rgba(10,10,10,.75));opacity:0;transition:opacity .5s;}
+.card-img.has-shot::after{opacity:1;}
+.card-art{position:absolute;inset:0;width:100%;height:100%;}
+.card-art *{vector-effect:non-scaling-stroke;}
+.card:hover .card-art{transform:scale(1.04);}
+.card-art{transition:transform .8s var(--ease);}
+.card-index{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:.66rem;color:var(--ink3);letter-spacing:.12em;z-index:2;}
+.card-live{position:absolute;top:14px;right:16px;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;border:1px solid var(--border);color:var(--ink2);background:rgba(10,10,10,.6);backdrop-filter:blur(6px);z-index:2;}
+.card-live.on{color:var(--accent);border-color:rgba(232,160,76,.35);}
+.draw{stroke-dasharray:var(--len,1000);stroke-dashoffset:var(--len,1000);transition:stroke-dashoffset 1.6s var(--ease);}
+.card.seen .draw{stroke-dashoffset:0;}
+.pop{opacity:0;transform:scale(.4);transform-origin:center;transition:opacity .6s var(--ease),transform .6s var(--spring);transition-delay:calc(var(--d,0)*60ms);}
+.card.seen .pop{opacity:1;transform:scale(1);}
+
+/* card 3D tilt */
+.card{transform-style:preserve-3d;will-change:transform;}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:38px;}
+.timeline::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--border);}
+.timeline-fill{position:absolute;left:9px;top:8px;width:1px;background:linear-gradient(180deg,var(--accent),rgba(232,160,76,.2));height:0;transition:height .2s linear;}
+.entry{position:relative;}
+.entry::before{content:'';position:absolute;left:-34px;top:34px;width:11px;height:11px;border-radius:50%;
+  background:var(--bg);border:1.5px solid var(--ink3);transition:all .5s var(--spring);z-index:1;}
+.entry.lit::before{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 5px rgba(232,160,76,.12);}
+.entry:hover{padding-left:10px;}
+@media(max-width:600px){.timeline{padding-left:26px;}.timeline::before,.timeline-fill{left:5px;}.entry::before{left:-26px;width:9px;height:9px;}}
+
+/* ── SKILL METERS ── */
+.skill-group li{display:flex;flex-direction:column;gap:6px;padding:6px 0;}
+.skill-group li:hover{transform:none;color:var(--ink);}
+.skill-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.skill-name{transition:color .3s;}
+.skill-group li:hover .skill-name{color:var(--accent);}
+.skill-lvl{font-family:var(--mono);font-size:.6rem;color:var(--ink3);letter-spacing:.08em;}
+.meter{height:2px;background:var(--surface-2);border-radius:2px;overflow:hidden;}
+.meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:2px;
+  transition:width 1.1s var(--ease);transition-delay:calc(var(--d,0)*70ms);opacity:.65;}
+.skill-group li:hover .meter i{opacity:1;}
+
+/* ── BACK TO TOP ── */
+.totop{position:fixed;right:28px;bottom:28px;z-index:6000;width:46px;height:46px;border-radius:50%;
+  background:rgba(17,17,17,.85);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--ink2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;
+  opacity:0;transform:translateY(14px) scale(.85);pointer-events:none;transition:all .45s var(--spring);}
+.totop.on{opacity:1;transform:none;pointer-events:auto;}
+.totop:hover{color:var(--accent);border-color:rgba(232,160,76,.4);transform:translateY(-2px);}
+.totop svg{width:16px;height:16px;}
+.totop circle{fill:none;stroke:var(--accent);stroke-width:2;opacity:.9;
+  transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset .12s linear;}
+@media(max-width:600px){.totop{right:16px;bottom:16px;}}
+
+/* ── SWIPE HINT ── */
+.swipe-hint{display:none;font-family:var(--mono);font-size:.66rem;color:var(--ink3);letter-spacing:.1em;
+  text-transform:uppercase;padding:0 24px 12px;}
+@media(max-width:900px){.swipe-hint{display:block;}}
+
+/* ── CURSOR LABEL ── */
+.cursor::after{content:attr(data-label);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--bg);text-transform:uppercase;
+  opacity:0;transition:opacity .25s;white-space:nowrap;}
+.cursor.label{background:var(--accent);border-color:var(--accent);mix-blend-mode:normal;}
+.cursor.label::after{opacity:1;}
+
+/* ── SPLIT TITLE ── characters rise per-letter ── */
+.split{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.split > b{display:inline-block;font-weight:inherit;transform:translateY(110%);
+  transition:transform .85s var(--spring);transition-delay:calc(var(--i,0)*28ms);}
+.split.on > b{transform:none;}
+.split > b.sp{width:.28em;}
+
+/* ── HERO GRID ── faint perspective floor that drifts ── */
+.hero-grid{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+  mask-image:linear-gradient(180deg,transparent 45%,#000 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 45%,#000 100%);}
+.hero-grid i{position:absolute;left:-50%;right:-50%;bottom:-40%;height:120%;
+  background-image:linear-gradient(rgba(232,160,76,.16) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(232,160,76,.16) 1px,transparent 1px);
+  background-size:64px 64px;
+  transform:perspective(340px) rotateX(68deg);
+  transform-origin:bottom center;
+  animation:gridDrift 14s linear infinite;}
+@keyframes gridDrift{from{background-position:0 0;}to{background-position:0 64px;}}
+
+/* ── PARALLAX ── */
+[data-par]{will-change:transform;transform:translateY(var(--py,0));}
+
+/* ── SECTION COUNTER ── */
+.sec-label{display:flex;align-items:center;gap:10px;}
+.sec-num{font-variant-numeric:tabular-nums;color:var(--ink3);}
+.sec-label .bar{flex:0 0 auto;width:0;height:1px;background:var(--accent);opacity:.5;
+  transition:width .9s var(--ease) .2s;}
+.sec-label.on .bar{width:44px;}
+
+/* ── TAG CASCADE ── */
+.card.seen .card-tags .tag{animation:tagIn .5s var(--spring) backwards;}
+.card-tags .tag:nth-child(1){animation-delay:.30s;}
+.card-tags .tag:nth-child(2){animation-delay:.38s;}
+.card-tags .tag:nth-child(3){animation-delay:.46s;}
+.card-tags .tag:nth-child(4){animation-delay:.54s;}
+@keyframes tagIn{from{opacity:0;transform:translateY(8px) scale(.9);}to{opacity:1;transform:none;}}
+
+/* ── LINK UNDERLINE SWEEP ── */
+.contact-grid a .contact-v{position:relative;display:inline-block;}
+.contact-grid a .contact-v::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--spring);}
+.contact-grid a:hover .contact-v::after{transform:scaleX(1);transform-origin:left;}
+
+/* ── STAT HOVER ── */
+.strip > div{transition:background .4s var(--ease);cursor:default;}
+.strip > div:hover{background:var(--surface);}
+.strip .n{transition:transform .5s var(--spring);}
+.strip > div:hover .n{transform:translateY(-3px);}
+
+/* ── NAV ENTRANCE ── */
+.nav-links a{opacity:0;transform:translateY(-8px);transition:opacity .5s var(--ease),transform .5s var(--spring),color .3s;}
+body.lit .nav-links a{opacity:1;transform:none;}
+.nav-links a:nth-child(1){transition-delay:.5s;}
+.nav-links a:nth-child(2){transition-delay:.56s;}
+.nav-links a:nth-child(3){transition-delay:.62s;}
+.nav-links a:nth-child(4){transition-delay:.68s;}
+.nav-links a:nth-child(5){transition-delay:.74s;}
+
+/* ── SECTION EDGE GLOW ── */
+.sec::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:90px;height:1px;
+  background:var(--accent);opacity:.5;box-shadow:0 0 20px var(--accent);}
+.sec.statement::before{display:none;}
 </style>
 </head>
 <body>
@@ -254,6 +397,17 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
 
 <!-- PROGRESS -->
 <div class="progress" id="progress" aria-hidden="true"></div>
+
+<!-- GRAIN -->
+<div class="grain" aria-hidden="true"></div>
+
+<!-- BACK TO TOP -->
+<button class="totop" id="totop" aria-label="Back to top">
+  <svg viewBox="0 0 40 40" aria-hidden="true" style="position:absolute;width:44px;height:44px;">
+    <circle id="totopRing" cx="20" cy="20" r="18" stroke-dasharray="113" stroke-dashoffset="113"/>
+  </svg>
+  <span style="position:relative;line-height:1;">↑</span>
+</button>
 
 <!-- NAV -->
 <nav>
@@ -278,6 +432,7 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
 <!-- HERO -->
 <header class="hero" id="top">
   <div class="hero-bg"><canvas id="heroCanvas" aria-hidden="true"></canvas></div>
+  <div class="hero-grid" aria-hidden="true"><i></i></div>
   <div class="hero-content">
     <div class="hero-eyebrow">AI-Enabled Software Engineer</div>
     <h1>
@@ -325,12 +480,22 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
     <div class="lab">2024 – 2026 · 7 projects · scroll →</div>
   </div>
   <div class="prog"><i id="prog"></i></div>
+  <p class="swipe-hint">← Swipe the work sideways</p>
   <div class="rail-wrap" id="railWrap">
     <div class="rail-stick">
       <div class="rail" id="rail">
 
-        <a class="card" href="https://github.com/smeetkataria7-cmyk/VAELO_main" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">VAELO_MAIN</span></div>
+        <a class="card" href="https://github.com/smeetkataria7-cmyk/VAELO_main" target="_blank" rel="noopener" data-cursor="View repo" data-shot="shots/vaelo.jpg">
+          <div class="card-img">
+            <span class="card-index">01</span><span class="card-live on">Live</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <path class="draw" style="--len:900" d="M-10 150 C 60 150, 70 70, 140 70 S 220 150, 290 150 S 370 70, 440 70" stroke="#e8a04c" stroke-width="1.5" opacity=".85"/>
+              <path class="draw" style="--len:900;transition-delay:.15s" d="M-10 170 C 60 170, 70 90, 140 90 S 220 170, 290 170 S 370 90, 440 90" stroke="#e8a04c" stroke-width="1" opacity=".4"/>
+              <path class="draw" style="--len:900;transition-delay:.3s" d="M-10 190 C 60 190, 70 110, 140 110 S 220 190, 290 190 S 370 110, 440 110" stroke="#e8a04c" stroke-width="1" opacity=".2"/>
+              <circle class="pop" style="--d:4" cx="140" cy="70" r="3.5" fill="#e8a04c"/>
+              <circle class="pop" style="--d:5" cx="290" cy="150" r="3.5" fill="#e8a04c"/>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>Vaelo Creative — Agency Website</h3>
             <div class="card-org">Vaelo Creative</div>
@@ -339,8 +504,20 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://github.com/smeetkataria7-cmyk/Deon-Tapes" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">DEON_TAPES</span></div>
+        <a class="card" href="https://github.com/smeetkataria7-cmyk/Deon-Tapes" target="_blank" rel="noopener" data-cursor="View repo" data-shot="shots/deon-tapes.jpg">
+          <div class="card-img">
+            <span class="card-index">02</span><span class="card-live">26 pages</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <g stroke="#e8a04c">
+                <rect class="pop" style="--d:0" x="30" y="52" width="360" height="26" rx="2" fill="rgba(232,160,76,.10)" stroke-width="1"/>
+                <rect class="pop" style="--d:1" x="52" y="88" width="316" height="26" rx="2" fill="rgba(232,160,76,.16)" stroke-width="1" opacity=".8"/>
+                <rect class="pop" style="--d:2" x="74" y="124" width="272" height="26" rx="2" fill="rgba(232,160,76,.10)" stroke-width="1" opacity=".6"/>
+                <rect class="pop" style="--d:3" x="96" y="160" width="228" height="26" rx="2" fill="rgba(232,160,76,.06)" stroke-width="1" opacity=".4"/>
+              </g>
+              <path class="draw" style="--len:200" d="M30 52 L30 186" stroke="#e8a04c" stroke-width="1" opacity=".5"/>
+              <path class="draw" style="--len:200;transition-delay:.2s" d="M390 52 L390 186" stroke="#e8a04c" stroke-width="1" opacity=".5"/>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>Deon Tapes — Manufacturer Website</h3>
             <div class="card-org">Vaelo Creative</div>
@@ -349,8 +526,20 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://www.simplicare.us/en-in/pages/home-in" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">SIMPLICARE</span></div>
+        <a class="card" href="https://www.simplicare.us/en-in/pages/home-in" target="_blank" rel="noopener" data-cursor="Visit site" data-shot="shots/simplicare.jpg">
+          <div class="card-img">
+            <span class="card-index">03</span><span class="card-live on">Live</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <path class="draw" style="--len:900" d="M-10 118 H 110 L 124 118 L 136 78 L 152 162 L 168 100 L 180 118 H 240 L 252 118 L 264 88 L 278 148 L 292 118 H 440"
+                    stroke="#e8a04c" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+              <g stroke="#e8a04c" stroke-width="1" opacity=".28">
+                <path class="pop" style="--d:5" d="M330 60 h26 M343 47 v26"/>
+                <path class="pop" style="--d:6" d="M70 172 h18 M79 163 v18"/>
+              </g>
+              <circle class="pop" style="--d:4" cx="152" cy="162" r="3" fill="#e8a04c"/>
+              <circle class="pop" style="--d:5" cx="278" cy="148" r="3" fill="#e8a04c"/>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>SimpliCare — Healthcare E-commerce</h3>
             <div class="card-org">Vaelo Creative</div>
@@ -359,8 +548,28 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://github.com/PalakAgrawal-git/Pharmatiya" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">PHARMATIYA</span></div>
+        <a class="card" href="https://github.com/PalakAgrawal-git/Pharmatiya" target="_blank" rel="noopener" data-cursor="View repo" data-shot="shots/pharmatiya.jpg">
+          <div class="card-img">
+            <span class="card-index">04</span><span class="card-live on">In build</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <g stroke="#e8a04c" stroke-width="1" opacity=".45">
+                <path class="draw" style="--len:300" d="M120 70 L210 110 L120 150 Z"/>
+                <path class="draw" style="--len:300;transition-delay:.1s" d="M210 110 L300 70 L300 150 Z"/>
+                <path class="draw" style="--len:300;transition-delay:.2s" d="M120 70 L300 70 M120 150 L300 150"/>
+              </g>
+              <g fill="#e8a04c">
+                <circle class="pop" style="--d:3" cx="120" cy="70" r="4"/>
+                <circle class="pop" style="--d:4" cx="210" cy="110" r="5"/>
+                <circle class="pop" style="--d:5" cx="120" cy="150" r="4"/>
+                <circle class="pop" style="--d:6" cx="300" cy="70" r="4"/>
+                <circle class="pop" style="--d:7" cx="300" cy="150" r="4"/>
+              </g>
+              <g fill="#e8a04c" opacity=".2">
+                <circle class="pop" style="--d:8" cx="66" cy="110" r="2.5"/>
+                <circle class="pop" style="--d:9" cx="354" cy="110" r="2.5"/>
+              </g>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>Pharmatiya Health — Pharma Platform</h3>
             <div class="card-org">Partner Project</div>
@@ -369,8 +578,27 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://www.tribalzone.in/" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">TRIBAL_ZONE</span></div>
+        <a class="card" href="https://www.tribalzone.in/" target="_blank" rel="noopener" data-cursor="Visit site" data-shot="shots/tribal-zone.jpg">
+          <div class="card-img">
+            <span class="card-index">05</span><span class="card-live on">Live</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <g stroke="#e8a04c" fill="none">
+                <circle class="draw" style="--len:420" cx="210" cy="110" r="66" stroke-width="1" opacity=".5"/>
+                <circle class="draw" style="--len:300;transition-delay:.15s" cx="210" cy="110" r="46" stroke-width="1" opacity=".35"/>
+                <circle class="draw" style="--len:170;transition-delay:.3s" cx="210" cy="110" r="26" stroke-width="1.5" opacity=".8"/>
+              </g>
+              <g fill="#e8a04c">
+                <circle class="pop" style="--d:3" cx="210" cy="44" r="3.5"/>
+                <circle class="pop" style="--d:4" cx="257" cy="63" r="3"/>
+                <circle class="pop" style="--d:5" cx="276" cy="110" r="3.5"/>
+                <circle class="pop" style="--d:6" cx="257" cy="157" r="3"/>
+                <circle class="pop" style="--d:7" cx="210" cy="176" r="3.5"/>
+                <circle class="pop" style="--d:8" cx="163" cy="157" r="3"/>
+                <circle class="pop" style="--d:9" cx="144" cy="110" r="3.5"/>
+                <circle class="pop" style="--d:10" cx="163" cy="63" r="3"/>
+              </g>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>Tribal Zone — Fashion Jewellery</h3>
             <div class="card-org">DVOC</div>
@@ -379,8 +607,21 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://github.com/smeetkataria7-cmyk/DVOC_2" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">DVOC</span></div>
+        <a class="card" href="https://github.com/smeetkataria7-cmyk/DVOC_2" target="_blank" rel="noopener" data-cursor="View repo" data-shot="shots/dvoc.jpg">
+          <div class="card-img">
+            <span class="card-index">06</span><span class="card-live on">Live</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <g stroke="#e8a04c" stroke-width="1">
+                <rect class="pop" style="--d:0" x="86" y="58" width="72" height="46" rx="3" fill="rgba(232,160,76,.10)"/>
+                <rect class="pop" style="--d:1" x="174" y="58" width="72" height="46" rx="3" fill="rgba(232,160,76,.16)"/>
+                <rect class="pop" style="--d:2" x="262" y="58" width="72" height="46" rx="3" fill="rgba(232,160,76,.10)"/>
+                <rect class="pop" style="--d:3" x="86" y="116" width="72" height="46" rx="3" fill="rgba(232,160,76,.06)" opacity=".7"/>
+                <rect class="pop" style="--d:4" x="174" y="116" width="72" height="46" rx="3" fill="rgba(232,160,76,.10)" opacity=".7"/>
+                <rect class="pop" style="--d:5" x="262" y="116" width="72" height="46" rx="3" fill="rgba(232,160,76,.06)" opacity=".7"/>
+              </g>
+              <path class="draw" style="--len:60;transition-delay:.5s" d="M196 78 l10 10 l20 -20" stroke="#e8a04c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>DVOC — Skilling Platform Website</h3>
             <div class="card-org">DVOC</div>
@@ -389,8 +630,13 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
           </div>
         </a>
 
-        <a class="card" href="https://github.com/smeetkataria7-cmyk/memory-lane" target="_blank" rel="noopener">
-          <div class="card-img"><span class="placeholder">MEMORY_LANE</span></div>
+        <a class="card" href="https://github.com/smeetkataria7-cmyk/memory-lane" target="_blank" rel="noopener" data-cursor="View repo" data-shot="shots/memory-lane.jpg">
+          <div class="card-img">
+            <span class="card-index">07</span><span class="card-live">Personal</span>
+            <svg class="card-art" viewBox="0 0 420 220" fill="none" aria-hidden="true">
+              <g id="orbs"></g>
+            </svg>
+          </div>
           <div class="card-body">
             <h3>Memory Lane — Mood Journal App</h3>
             <div class="card-org">Personal Project</div>
@@ -418,7 +664,8 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
       <div class="sec-title">Where I've <em>worked</em>.</div>
     </div>
 
-    <div data-rev data-stagger>
+    <div class="timeline" data-rev data-stagger>
+      <div class="timeline-fill" id="tlFill" aria-hidden="true"></div>
       <div class="entry">
         <div class="entry-head">
           <div class="entry-title">AI-Enabled Software Engineer <span class="entry-org">— Vaelo Creative</span></div>
@@ -477,34 +724,34 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
       <div class="skill-group">
         <h4>Frontend</h4>
         <ul>
-          <li>Next.js / React</li>
-          <li>TypeScript</li>
-          <li>Tailwind CSS</li>
-          <li>Shopify Liquid</li>
-          <li>GSAP / ScrollTrigger</li>
-          <li>HTML, CSS, JavaScript</li>
+          <li data-lvl="90"><div class="skill-row"><span class="skill-name">Next.js / React</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="85"><div class="skill-row"><span class="skill-name">TypeScript</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="88"><div class="skill-row"><span class="skill-name">Tailwind CSS</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="82"><div class="skill-row"><span class="skill-name">Shopify Liquid</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="75"><div class="skill-row"><span class="skill-name">GSAP / ScrollTrigger</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="95"><div class="skill-row"><span class="skill-name">HTML, CSS, JavaScript</span><span class="skill-lvl">Core</span></div><div class="meter"><i></i></div></li>
         </ul>
       </div>
       <div class="skill-group">
-        <h4>Backend & Data</h4>
+        <h4>Backend &amp; Data</h4>
         <ul>
-          <li>Node.js</li>
-          <li>Supabase / Postgres</li>
-          <li>Python</li>
-          <li>SQL</li>
-          <li>WhatsApp Cloud API</li>
-          <li>REST APIs</li>
+          <li data-lvl="80"><div class="skill-row"><span class="skill-name">Node.js</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="82"><div class="skill-row"><span class="skill-name">Supabase / Postgres</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="78"><div class="skill-row"><span class="skill-name">Python</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="65"><div class="skill-row"><span class="skill-name">SQL</span><span class="skill-lvl">Learning</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="76"><div class="skill-row"><span class="skill-name">WhatsApp Cloud API</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="84"><div class="skill-row"><span class="skill-name">REST APIs</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
         </ul>
       </div>
       <div class="skill-group">
-        <h4>Tools & Workflow</h4>
+        <h4>Tools &amp; Workflow</h4>
         <ul>
-          <li>Git & GitHub</li>
-          <li>Vercel / GitHub Pages</li>
-          <li>React Native / Expo</li>
-          <li>Excel (advanced)</li>
-          <li>Workflow Automation</li>
-          <li>SOP Documentation</li>
+          <li data-lvl="90"><div class="skill-row"><span class="skill-name">Git &amp; GitHub</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="85"><div class="skill-row"><span class="skill-name">Vercel / GitHub Pages</span><span class="skill-lvl">Daily</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="70"><div class="skill-row"><span class="skill-name">React Native / Expo</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="92"><div class="skill-row"><span class="skill-name">Excel (advanced)</span><span class="skill-lvl">Core</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="86"><div class="skill-row"><span class="skill-name">Workflow Automation</span><span class="skill-lvl">Core</span></div><div class="meter"><i></i></div></li>
+          <li data-lvl="80"><div class="skill-row"><span class="skill-name">SOP Documentation</span><span class="skill-lvl">Shipped</span></div><div class="meter"><i></i></div></li>
         </ul>
       </div>
     </div>
@@ -518,7 +765,7 @@ footer{padding:48px 60px;text-align:center;font-family:var(--mono);font-size:.72
       <div class="sec-label">Beyond Work</div>
       <div class="sec-title">Outside the <em>screen</em>.</div>
     </div>
-    <div class="beyond-grid" data-rev data-stagger>
+    <div class="beyond-grid" data-rev data-stagger data-par="18">
       <a class="beyond-card" href="smeet-bio.html">
         <h4>Full Bio</h4>
         <p>The longer story — background, interests, what shaped me.</p>
@@ -724,7 +971,8 @@ var doc=document,root=doc.documentElement,reduce=matchMedia('(prefers-reduced-mo
   if(!revs.length)return;
   if(reduce){revs.forEach(function(el){el.classList.add('in');});return;}
   function show(el,stagger){
-    if(el.classList.contains('in'))return;
+    if(el.dataset.shown)return;
+    el.dataset.shown='1';
     if(el.hasAttribute('data-stagger')){
       Array.prototype.forEach.call(el.children,function(k,i){k.style.transitionDelay=(stagger?i*80:0)+'ms';k.classList.add('in');});
     }
@@ -745,7 +993,7 @@ var doc=document,root=doc.documentElement,reduce=matchMedia('(prefers-reduced-mo
   function sweep(){
     sweeping=false;
     revs.forEach(function(el){
-      if(el.classList.contains('in'))return;
+      if(el.dataset.shown)return;
       if(el.getBoundingClientRect().top<innerHeight*.92){show(el,false);io.unobserve(el);}
     });
   }
@@ -853,6 +1101,279 @@ doc.querySelectorAll('.beyond-card').forEach(function(card){
     card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
   });
 });
+
+/* ── CARD ARTWORK: draw + tilt ──
+   Each card's SVG animates once, when the card first reaches the viewport. */
+(function(){
+  /* Screenshots are opt-in per card via data-shot. A file that is not there
+     yet simply never loads and the generated artwork stands in, so the rail
+     works before any image exists and upgrades as files are added. */
+  doc.querySelectorAll('.card[data-shot]').forEach(function(card){
+    var holder=card.querySelector('.card-img');
+    var img=new Image();
+    img.className='card-shot';img.alt='';img.setAttribute('aria-hidden','true');
+    img.loading='lazy';img.decoding='async';
+    img.onload=function(){
+      holder.insertBefore(img,holder.firstChild);
+      holder.classList.add('has-shot');
+      requestAnimationFrame(function(){img.classList.add('ready');});
+    };
+    img.src=card.dataset.shot;
+  });
+
+  /* stroke-dasharray needs the true path length, which only the browser knows */
+  doc.querySelectorAll('.card-art .draw').forEach(function(p){
+    try{var len=Math.ceil(p.getTotalLength());p.style.setProperty('--len',len);}catch(e){}
+  });
+
+  /* Memory Lane: a month of mood orbs, seeded so the grid is stable across loads
+     rather than reshuffling on every visit */
+  var orbs=doc.getElementById('orbs');
+  if(orbs){
+    var hues=['#e8a04c','#c8783c','#f0c070','#a86840','#f5d8a0'],seed=7;
+    function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+    for(var r=0;r<4;r++)for(var c=0;c<8;c++){
+      var cir=doc.createElementNS('http://www.w3.org/2000/svg','circle');
+      cir.setAttribute('cx',78+c*38);cir.setAttribute('cy',62+r*34);
+      cir.setAttribute('r',(6+rnd()*6).toFixed(1));
+      cir.setAttribute('fill',hues[Math.floor(rnd()*hues.length)]);
+      cir.setAttribute('opacity',(0.25+rnd()*0.6).toFixed(2));
+      cir.setAttribute('class','pop');
+      cir.style.setProperty('--d',r*8+c);
+      orbs.appendChild(cir);
+    }
+  }
+
+  var cards=[].slice.call(doc.querySelectorAll('.card'));
+  if(reduce){cards.forEach(function(c){c.classList.add('seen');});return;}
+
+  /* The rail moves the cards sideways inside a pinned viewport, so all but the
+     first couple sit off to the right and an element observer never fires for
+     them. Watching the rail section instead and releasing the cards on a
+     stagger means every artwork draws, in order, once the section is reached. */
+  var wrap=doc.getElementById('railWrap');
+  if(wrap){
+    var railIo=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting)return;
+        cards.forEach(function(c,i){setTimeout(function(){c.classList.add('seen');},i*110);});
+        railIo.disconnect();
+      });
+    },{threshold:.05});
+    railIo.observe(wrap);
+  }
+
+  /* cards outside the rail (none today, but the page grows) keep their own */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('seen');io.unobserve(e.target);}});
+  },{threshold:.2});
+  cards.forEach(function(c){if(!wrap||!wrap.contains(c))io.observe(c);});
+
+  /* pointer tilt — skipped on touch, where there is no hover to justify it */
+  if(!matchMedia('(hover:hover)').matches)return;
+  doc.querySelectorAll('.card').forEach(function(card){
+    card.addEventListener('pointermove',function(e){
+      var r=card.getBoundingClientRect();
+      var dx=(e.clientX-r.left)/r.width-.5,dy=(e.clientY-r.top)/r.height-.5;
+      card.style.transform='translateY(-4px) perspective(900px) rotateX('+(-dy*4).toFixed(2)+'deg) rotateY('+(dx*6).toFixed(2)+'deg)';
+    });
+    card.addEventListener('pointerleave',function(){card.style.transform='';});
+  });
+})();
+
+/* ── TIMELINE ── line fills and nodes light as the section passes ── */
+(function(){
+  var fill=doc.getElementById('tlFill'),tl=doc.querySelector('.timeline');
+  if(!tl)return;
+  var entries=[].slice.call(tl.querySelectorAll('.entry'));
+  if(reduce){entries.forEach(function(e){e.classList.add('lit');});if(fill)fill.style.height='100%';return;}
+  var ticking=false;
+  function update(){
+    ticking=false;
+    var r=tl.getBoundingClientRect(),mid=innerHeight*.62;
+    var p=Math.min(1,Math.max(0,(mid-r.top)/r.height));
+    if(fill)fill.style.height=(p*100)+'%';
+    entries.forEach(function(en){
+      var er=en.getBoundingClientRect();
+      en.classList.toggle('lit',er.top+34<mid);
+    });
+  }
+  addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(update);ticking=true;}},{passive:true});
+  addEventListener('resize',update);update();
+})();
+
+/* ── SKILL METERS ── */
+(function(){
+  var items=doc.querySelectorAll('.skill-group li[data-lvl]');
+  if(!items.length)return;
+  if(reduce){items.forEach(function(li){li.querySelector('.meter i').style.width=li.dataset.lvl+'%';});return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var li=e.target,group=[].slice.call(li.parentNode.children);
+      li.querySelector('.meter i').style.setProperty('--d',group.indexOf(li));
+      li.querySelector('.meter i').style.width=li.dataset.lvl+'%';
+      io.unobserve(li);
+    });
+  },{threshold:.4});
+  items.forEach(function(li){io.observe(li);});
+})();
+
+/* ── BACK TO TOP ── ring tracks page progress ── */
+(function(){
+  var btn=doc.getElementById('totop'),ring=doc.getElementById('totopRing');
+  if(!btn)return;
+  var CIRC=113,ticking=false;
+  function update(){
+    ticking=false;
+    var h=doc.documentElement;
+    var max=(h.scrollHeight||doc.body.scrollHeight)-h.clientHeight;
+    var p=max>0?Math.min(1,Math.max(0,scrollY/max)):0;
+    btn.classList.toggle('on',scrollY>innerHeight*.9);
+    if(ring)ring.style.strokeDashoffset=CIRC*(1-p);
+  }
+  addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(update);ticking=true;}},{passive:true});
+  btn.addEventListener('click',function(){
+    if(reduce){scrollTo(0,0);return;}
+    var start=scrollY,t0=performance.now(),dur=700;
+    (function step(now){
+      var t=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-t,3);
+      scrollTo(0,start*(1-e));
+      if(t<1)requestAnimationFrame(step);
+    })(t0);
+  });
+  update();
+})();
+
+/* ── MAGNETIC BUTTONS ── */
+(function(){
+  if(reduce||!matchMedia('(hover:hover)').matches)return;
+  doc.querySelectorAll('.btn').forEach(function(btn){
+    btn.addEventListener('pointermove',function(e){
+      var r=btn.getBoundingClientRect();
+      var dx=(e.clientX-r.left-r.width/2)/r.width,dy=(e.clientY-r.top-r.height/2)/r.height;
+      btn.style.transform='translate('+(dx*10).toFixed(1)+'px,'+(dy*7).toFixed(1)+'px)';
+    });
+    btn.addEventListener('pointerleave',function(){btn.style.transform='';});
+  });
+})();
+
+/* ── CURSOR LABELS ── the ring names the action it is hovering ── */
+(function(){
+  var cur=doc.getElementById('cursor');
+  if(!cur||!matchMedia('(hover:hover)').matches||reduce)return;
+  doc.querySelectorAll('[data-cursor]').forEach(function(el){
+    el.addEventListener('pointerenter',function(){
+      cur.dataset.label=el.dataset.cursor;cur.classList.add('label');
+    });
+    el.addEventListener('pointerleave',function(){cur.classList.remove('label');});
+  });
+})();
+
+/* ── SPLIT TITLES ── each section heading assembles letter by letter.
+   Split in script so the markup stays plain text for assistive tech until
+   it runs; the accessible name is restored with aria-label. */
+(function(){
+  var titles=doc.querySelectorAll('.sec-title');
+  if(!titles.length||reduce)return;
+  titles.forEach(function(title){
+    var label=title.textContent;
+    var parts=[].slice.call(title.childNodes),n=0;
+    title.textContent='';
+    title.setAttribute('aria-label',label);
+    parts.forEach(function(node){
+      var isEm=node.nodeName==='EM';
+      var text=node.textContent;
+      var host=title;
+      if(isEm){host=doc.createElement('em');title.appendChild(host);}
+      var wrap=doc.createElement('span');
+      wrap.className='split';wrap.setAttribute('aria-hidden','true');
+      host.appendChild(wrap);
+      text.split('').forEach(function(ch){
+        var b=doc.createElement('b');
+        if(ch===' '){b.className='sp';b.innerHTML='&nbsp;';}
+        else b.textContent=ch;
+        b.style.setProperty('--i',n++);
+        wrap.appendChild(b);
+      });
+    });
+  });
+  function lightUp(t){t.querySelectorAll('.split').forEach(function(s){s.classList.add('on');});}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting)return;
+      lightUp(e.target);io.unobserve(e.target);
+    });
+  },{threshold:.4});
+  titles.forEach(function(t){io.observe(t);});
+
+  /* a fast jump can outrun the observer — anything already passed is shown */
+  var sweeping=false;
+  function sweep(){
+    sweeping=false;
+    titles.forEach(function(t){
+      if(t.querySelector('.split.on'))return;
+      if(t.getBoundingClientRect().top<innerHeight*.9){lightUp(t);io.unobserve(t);}
+    });
+  }
+  addEventListener('scroll',function(){if(!sweeping){requestAnimationFrame(sweep);sweeping=true;}},{passive:true});
+})();
+
+/* ── SECTION COUNTERS ── a rule draws out beside each label ── */
+(function(){
+  var labels=doc.querySelectorAll('.sec-label');
+  if(!labels.length)return;
+  labels.forEach(function(el,i){
+    var num=doc.createElement('span');
+    num.className='sec-num';num.textContent=String(i+1).padStart(2,'0');
+    var bar=doc.createElement('span');bar.className='bar';
+    el.insertBefore(num,el.firstChild);
+    el.insertBefore(bar,num.nextSibling);
+  });
+  if(reduce){labels.forEach(function(l){l.classList.add('on');});return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
+  },{threshold:.6});
+  labels.forEach(function(l){io.observe(l);});
+})();
+
+/* ── PARALLAX ── elements drift against the scroll at their own rate ── */
+(function(){
+  var pars=doc.querySelectorAll('[data-par]');
+  if(!pars.length||reduce)return;
+  var ticking=false;
+  function move(){
+    ticking=false;
+    var vh=innerHeight;
+    pars.forEach(function(el){
+      var b=el.getBoundingClientRect();
+      if(b.bottom<-200||b.top>vh+200)return;      /* offscreen costs nothing */
+      var mid=(b.top+b.height/2-vh/2)/vh;
+      var amt=parseFloat(el.dataset.par)||20;
+      el.style.setProperty('--py',(mid*amt).toFixed(1)+'px');
+    });
+  }
+  addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(move);ticking=true;}},{passive:true});
+  addEventListener('resize',move);move();addEventListener('load',move);
+})();
+
+/* ── HERO PARALLAX ── content lifts and fades as the hero leaves ── */
+(function(){
+  var content=doc.querySelector('.hero-content'),grid=doc.querySelector('.hero-grid');
+  if(!content||reduce)return;
+  var ticking=false;
+  function move(){
+    ticking=false;
+    var y=scrollY,vh=innerHeight;
+    if(y>vh)return;
+    var p=Math.min(1,y/vh);
+    content.style.transform='translateY('+(y*.28).toFixed(1)+'px)';
+    content.style.opacity=(1-p*1.1).toFixed(3);
+    if(grid)grid.style.transform='translateY('+(y*.14).toFixed(1)+'px)';
+  }
+  addEventListener('scroll',function(){if(!ticking){requestAnimationFrame(move);ticking=true;}},{passive:true});
+  move();
+})();
 
 /* ── MARQUEE SCROLL BOOST ── */
 (function(){
