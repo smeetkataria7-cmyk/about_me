@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Somewhere Between the Music and the Road</title>
 <meta name="description" content="The longer version — piano, motorcycles through Ladakh, photography, and the things that shape how Smeet Kataria works.">
-<meta name="theme-color" content="#12100c">
+<meta name="theme-color" content="#07070a">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%2312100c'/><text x='50' y='70' font-size='58' font-family='Georgia,serif' fill='%23b8443a' text-anchor='middle'>S</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/theme.css?v=1788675474">
+<link rel="stylesheet" href="assets/theme.css?v=1788683712">
 <style>
 /* ── page-specific ── */
 .hero{position:relative;z-index:1;padding:clamp(130px,20vh,190px) var(--pad) clamp(50px,8vh,90px);}
@@ -22,7 +22,7 @@
 .hero-meta{display:flex;gap:14px;align-items:center;margin-bottom:clamp(24px,4vh,38px);}
 .hero-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--ox);
   animation:pulse 2.4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(184,68,58,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(184,68,58,0);}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(242,132,60,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(242,132,60,0);}}
 .hero-cols{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
   gap:clamp(26px,5vw,72px);align-items:end;}
 @media(max-width:860px){.hero-cols{grid-template-columns:1fr;gap:28px;}}
@@ -63,13 +63,13 @@
 
 /* piano keys — the black keys light in sequence, like a phrase being played */
 .keys{display:flex;position:absolute;left:0;right:0;bottom:0;height:56%;}
-.key-w{flex:1;border-right:1px solid rgba(18,16,12,.75);background:rgba(236,228,216,.10);
+.key-w{flex:1;border-right:1px solid rgba(7,7,10,.75);background:rgba(244,242,240,.10);
   transition:background .5s var(--ease);}
-.chapter.in .key-w.hit{background:rgba(236,228,216,.24);}
+.chapter.in .key-w.hit{background:rgba(244,242,240,.24);}
 .key-b{position:absolute;top:0;width:5.6%;height:60%;background:var(--ink);
-  border:1px solid rgba(236,228,216,.10);border-top:none;border-radius:0 0 2px 2px;
+  border:1px solid rgba(244,242,240,.10);border-top:none;border-radius:0 0 2px 2px;
   transition:background .45s var(--ease),box-shadow .45s var(--ease);}
-.chapter.in .key-b.hit{background:var(--ox);box-shadow:0 0 18px rgba(184,68,58,.55);}
+.chapter.in .key-b.hit{background:var(--ox);box-shadow:0 0 18px rgba(242,132,60,.55);}
 
 /* altitude profile for the ride */
 .alt-label{position:absolute;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
@@ -188,18 +188,18 @@
         <svg viewBox="0 0 400 300" fill="none" aria-hidden="true" preserveAspectRatio="none">
           <!-- altitude profile: Leh 11,500ft → Khardung La 17,500ft → Nubra 10,000ft -->
           <path class="draw" d="M0 214 L70 196 L140 74 L200 58 L262 150 L330 232 L400 238"
-                stroke="#b8443a" stroke-width="1.8" stroke-linejoin="round"/>
+                stroke="#f2843c" stroke-width="1.8" stroke-linejoin="round"/>
           <path d="M0 214 L70 196 L140 74 L200 58 L262 150 L330 232 L400 238 L400 300 L0 300 Z"
                 fill="url(#ridge)" opacity=".22"/>
           <defs><linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#b8443a"/><stop offset="1" stop-color="#b8443a" stop-opacity="0"/>
+            <stop offset="0" stop-color="#f2843c"/><stop offset="1" stop-color="#f2843c" stop-opacity="0"/>
           </linearGradient></defs>
-          <g stroke="rgba(236,228,216,.10)" stroke-width="1">
+          <g stroke="rgba(244,242,240,.10)" stroke-width="1">
             <path d="M0 90 H400"/><path d="M0 150 H400"/><path d="M0 210 H400"/>
           </g>
-          <circle class="pop" style="--d:6" cx="200" cy="58" r="4.5" fill="#c39a5f"/>
-          <circle class="pop" style="--d:8" cx="0" cy="214" r="3.5" fill="#b8443a"/>
-          <circle class="pop" style="--d:10" cx="400" cy="238" r="3.5" fill="#b8443a"/>
+          <circle class="pop" style="--d:6" cx="200" cy="58" r="4.5" fill="#f2c07c"/>
+          <circle class="pop" style="--d:8" cx="0" cy="214" r="3.5" fill="#f2843c"/>
+          <circle class="pop" style="--d:10" cx="400" cy="238" r="3.5" fill="#f2843c"/>
         </svg>
         <span class="alt-label" style="left:44%;top:8%">Khardung La · 17,500 ft</span>
         <span class="alt-label" style="left:4%;bottom:22%">Leh</span>
@@ -223,15 +223,15 @@
         <svg viewBox="0 0 400 300" fill="none" aria-hidden="true">
           <!-- aperture blades opening -->
           <g transform="translate(200,150)">
-            <g stroke="#c39a5f" stroke-width="1.2" fill="none" opacity=".55">
+            <g stroke="#f2c07c" stroke-width="1.2" fill="none" opacity=".55">
               <circle class="draw" r="86"/><circle class="draw" style="transition-delay:.15s" r="62"/>
             </g>
-            <g stroke="#b8443a" stroke-width="1.4" fill="none">
+            <g stroke="#f2843c" stroke-width="1.4" fill="none">
               <path class="draw" style="transition-delay:.3s" d="M0 -62 L54 -31 L54 31 L0 62 L-54 31 L-54 -31 Z"/>
             </g>
-            <circle class="pop" style="--d:8" r="7" fill="#b8443a"/>
+            <circle class="pop" style="--d:8" r="7" fill="#f2843c"/>
           </g>
-          <g fill="#c39a5f">
+          <g fill="#f2c07c">
             <rect class="pop" style="--d:2" x="40" y="44" width="30" height="20" rx="1" opacity=".35"/>
             <rect class="pop" style="--d:3" x="330" y="44" width="30" height="20" rx="1" opacity=".25"/>
             <rect class="pop" style="--d:4" x="40" y="236" width="30" height="20" rx="1" opacity=".25"/>
@@ -288,7 +288,7 @@
   <span>Thane, Mumbai · India</span>
 </footer>
 
-<script src="assets/motion.js?v=1788675474"></script>
+<script src="assets/motion.js?v=1788683712"></script>
 <script>
 /* Piano keyboard — built in script so the markup stays free of 40 empty divs.
    The lit keys spell a phrase rather than firing at random, so the same

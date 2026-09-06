@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seven Brands, One Engineer</title>
+<meta name="description" content="A portfolio with no style of its own. Smeet Kataria builds other people's brands — scroll and the page becomes each one.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Oswald:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Spectral:ital,wght@0,300;0,400;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Poppins:wght@400;600;800&family=Quicksand:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   THE CHAMELEON
+   The page holds no style of its own. Every visual decision below
+   is a variable, and each client section rewrites all of them —
+   ground, ink, accent, typeface, corner radius, letterfit.
+   The two bare screens are deliberately unstyled: without a client,
+   there is nothing here to look at.
+   ═══════════════════════════════════════════════════════════════ */
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  /* the neutral: browser defaults, on purpose */
+  --ground:#ffffff;
+  --ink:#000000;
+  --ink-2:#444444;
+  --accent:#0000ee;
+  --line:rgba(0,0,0,.18);
+  --font:Times,'Times New Roman',serif;
+  --display:Times,'Times New Roman',serif;
+  --radius:0px;
+  --track:0em;
+  --weight:400;
+  --caps:none;
+}
+
+html{scroll-behavior:auto;}
+body{
+  background:var(--ground);color:var(--ink);font-family:var(--font);
+  line-height:1.6;overflow-x:clip;
+  transition:background .85s cubic-bezier(.4,0,.2,1),color .85s cubic-bezier(.4,0,.2,1);
+}
+img{max-width:100%;display:block;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+
+/* ── CHROME ── adopts whichever brand is on screen ── */
+.chrome{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px clamp(18px,4vw,44px);
+  font-family:var(--font);font-size:13px;font-weight:var(--weight);
+  color:var(--ink);letter-spacing:var(--track);
+  border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:background .85s cubic-bezier(.4,0,.2,1),color .85s cubic-bezier(.4,0,.2,1),
+             border-color .85s cubic-bezier(.4,0,.2,1);}
+.chrome b{font-weight:var(--weight);text-transform:var(--caps);}
+.chrome .who{opacity:.55;font-size:11px;font-family:'IBM Plex Mono',monospace;
+  letter-spacing:.08em;text-transform:uppercase;}
+
+.bar{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:200;
+  transform-origin:left;transform:scaleX(0);width:100%;
+  transition:background .85s cubic-bezier(.4,0,.2,1);}
+
+/* ── SECTIONS ── */
+section{min-height:100vh;display:flex;align-items:center;
+  padding:clamp(80px,12vh,120px) clamp(18px,4vw,44px);position:relative;}
+.inner{max-width:1240px;margin:0 auto;width:100%;}
+
+/* ── THE BARE OPENING ── unstyled on purpose ── */
+.bare .inner{max-width:760px;}
+.bare h1{font-size:clamp(1.9rem,4.4vw,3rem);font-weight:400;line-height:1.2;
+  margin-bottom:20px;letter-spacing:-.01em;}
+.bare p{font-size:1.02rem;margin-bottom:14px;max-width:62ch;color:var(--ink-2);}
+.bare a{color:var(--accent);}
+.bare hr{border:none;border-top:1px solid var(--line);margin:26px 0;}
+.bare .note{font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:26px;}
+.cue{margin-top:34px;font-family:'IBM Plex Mono',monospace;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+  display:flex;align-items:center;gap:10px;}
+.cue i{display:block;width:1px;height:22px;background:var(--ink-2);
+  animation:cue 1.8s ease-in-out infinite;}
+@keyframes cue{0%,100%{opacity:.25;transform:scaleY(.5);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}}
+
+/* ── A CLIENT SCREEN ── every rule reads from the variables ── */
+.client .inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+  gap:clamp(26px,4vw,64px);align-items:center;}
+@media(max-width:900px){.client .inner{grid-template-columns:1fr;gap:26px;}}
+
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+  display:flex;align-items:center;gap:11px;}
+.eyebrow s{display:block;width:26px;height:1px;background:var(--accent);text-decoration:none;}
+
+.client h2{font-family:var(--display);font-size:clamp(2.1rem,5.6vw,4.1rem);
+  line-height:1.02;font-weight:var(--weight);letter-spacing:var(--track);
+  text-transform:var(--caps);margin-bottom:18px;}
+.client .say{font-size:clamp(.95rem,1.3vw,1.08rem);line-height:1.65;
+  color:var(--ink-2);max-width:46ch;margin-bottom:22px;}
+.facts{display:flex;flex-direction:column;border-top:1px solid var(--line);
+  max-width:38ch;margin-bottom:24px;}
+.facts div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;
+  border-bottom:1px solid var(--line);font-size:.82rem;}
+.facts dt{font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-2);}
+.facts dd{color:var(--ink);}
+.cta{display:inline-block;padding:12px 24px;background:var(--accent);
+  color:var(--ground);text-decoration:none;border-radius:var(--radius);
+  font-family:var(--font);font-size:.8rem;font-weight:600;
+  letter-spacing:var(--track);text-transform:var(--caps);
+  transition:transform .3s cubic-bezier(.22,.61,.36,1),opacity .3s;}
+.cta:hover{transform:translateY(-2px);opacity:.9;}
+
+.shot{position:relative;border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--line);aspect-ratio:16/10;background:var(--ground);}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+/* shutters — the sliced reveal, per section */
+.shutters{position:absolute;inset:0;display:flex;pointer-events:none;z-index:2;}
+.shutters i{flex:1;background:var(--ground);
+  transition:transform .9s cubic-bezier(.72,0,.18,1);
+  transition-delay:calc(var(--d,0)*70ms);}
+.on .shutters i{transform:translateY(-101%);}
+
+/* the running count, bottom right of each client screen */
+.count{position:absolute;right:clamp(18px,4vw,44px);bottom:clamp(20px,4vh,40px);
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.14em;
+  color:var(--ink-2);}
+.count b{color:var(--accent);font-weight:400;}
+
+/* ── BRAND SKINS ── pulled from the real sites ── */
+body[data-brand="vaelo"]{
+  --ground:#000000;--ink:#ffffff;--ink-2:#9a9a9a;--accent:#ffffff;
+  --line:rgba(255,255,255,.2);
+  --font:'Archivo',sans-serif;--display:'Archivo',sans-serif;
+  --radius:100px;--track:-.02em;--weight:800;--caps:uppercase;}
+body[data-brand="vaelo"] .cta{color:#000;}
+
+body[data-brand="deon"]{
+  --ground:#111417;--ink:#f2f4f6;--ink-2:#9aa4ad;--accent:#c80000;
+  --line:rgba(242,244,246,.16);
+  --font:'Archivo',sans-serif;--display:'Oswald',sans-serif;
+  --radius:2px;--track:.01em;--weight:700;--caps:uppercase;}
+
+body[data-brand="simplicare"]{
+  --ground:#ffffff;--ink:#12403a;--ink-2:#5d7b76;--accent:#2f8f80;
+  --line:rgba(18,64,58,.14);
+  --font:'DM Sans',sans-serif;--display:'DM Sans',sans-serif;
+  --radius:100px;--track:-.01em;--weight:700;--caps:none;}
+
+body[data-brand="pharmatiya"]{
+  --ground:#f4f1ea;--ink:#10312e;--ink-2:#5a6b68;--accent:#145050;
+  --line:rgba(16,49,46,.16);
+  --font:'Spectral',Georgia,serif;--display:'Spectral',Georgia,serif;
+  --radius:2px;--track:-.005em;--weight:400;--caps:none;}
+
+body[data-brand="tribal"]{
+  --ground:#f7ecdd;--ink:#4a3520;--ink-2:#8a7358;--accent:#b0442f;
+  --line:rgba(74,53,32,.18);
+  --font:'Cormorant Garamond',Georgia,serif;--display:'Cormorant Garamond',Georgia,serif;
+  --radius:0px;--track:.01em;--weight:300;--caps:none;}
+body[data-brand="tribal"] h2{font-style:italic;}
+
+body[data-brand="dvoc"]{
+  --ground:#17233a;--ink:#f4f7fb;--ink-2:#93a3bd;--accent:#f07828;
+  --line:rgba(244,247,251,.16);
+  --font:'Poppins',sans-serif;--display:'Poppins',sans-serif;
+  --radius:6px;--track:-.015em;--weight:800;--caps:none;}
+
+body[data-brand="memory"]{
+  --ground:#141428;--ink:#eae7f5;--ink-2:#9b95bd;--accent:#7d7ad0;
+  --line:rgba(234,231,245,.16);
+  --font:'Quicksand',sans-serif;--display:'Quicksand',sans-serif;
+  --radius:20px;--track:0em;--weight:600;--caps:none;}
+
+/* ── REVEAL ── */
+.rise{opacity:0;transform:translateY(22px);
+  transition:opacity .9s cubic-bezier(.25,.46,.2,1),transform .9s cubic-bezier(.25,.46,.2,1);}
+.on .rise{opacity:1;transform:none;}
+.on .rise:nth-child(2){transition-delay:.08s}
+.on .rise:nth-child(3){transition-delay:.16s}
+.on .rise:nth-child(4){transition-delay:.24s}
+.on .rise:nth-child(5){transition-delay:.32s}
+
+@media(prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important;}
+  .rise{opacity:1!important;transform:none!important;}
+  .shutters{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="bar" id="bar" aria-hidden="true"></div>
+
+<header class="chrome">
+  <b>Smeet Kataria</b>
+  <span class="who" id="who">no client · unstyled</span>
+</header>
+
+<!-- ════ THE BARE OPENING ════ -->
+<section class="bare">
+  <div class="inner">
+    <p class="note">This page has no design of its own</p>
+    <h1>I build other people's brands. Seven of them are live right now.</h1>
+    <p>What you are looking at is an unstyled HTML document — default typeface, default link colour, no decisions made. That is deliberate. On my own, there is nothing here to look at.</p>
+    <p>Keep scrolling. The page will become each client I have shipped for: their typeface, their colour, their shape language. Seven complete design systems, one after another.</p>
+    <p>Then it will go back to looking like this.</p>
+    <hr>
+    <p>Smeet Kataria — AI-enabled software engineer at <a href="https://www.vaelocreative.com/" target="_blank" rel="noopener">Vaelo Creative</a>, Mumbai. Third-year B.Tech in AI &amp; Data Science, KJ Somaiya. 600 hours logged across three companies.</p>
+    <div class="cue"><i></i> Scroll</div>
+  </div>
+</section>
+
+<!-- ════ THE SEVEN ════ -->
+<section class="client" data-brand="vaelo" data-who="Vaelo Creative · agency">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 01 — Vaelo Creative</div>
+      <h2 class="rise">We make brands impossible to scroll past</h2>
+      <p class="say rise">The studio's own site. Scroll-driven motion, a pinned work rail, page transitions, and a Python generator that builds the case-study pages from a data file.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Creative agency</dd></div>
+        <div><dt>Built</dt><dd>HTML · GSAP · Python</dd></div>
+        <div><dt>Status</dt><dd>Live</dd></div>
+      </dl>
+      <a class="cta rise" href="https://www.vaelocreative.com/" target="_blank" rel="noopener">Visit site</a>
+    </div>
+    <div class="shot"><img src="shots/vaelo.jpg" alt="Vaelo Creative homepage"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>01</b> / 07</div>
+</section>
+
+<section class="client" data-brand="deon" data-who="Deon Tapes · industrial">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 02 — Deon Tapes</div>
+      <h2 class="rise">It's power-strong</h2>
+      <p class="say rise">A full rebuild for an industrial adhesive tape manufacturer. Twenty-six pages, a brand system carried end to end, wireframes, and Apps Script tooling behind the forms.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Industrial manufacturing</dd></div>
+        <div><dt>Scope</dt><dd>26 pages · brand system</dd></div>
+        <div><dt>Status</dt><dd>Live</dd></div>
+      </dl>
+      <a class="cta rise" href="https://deontapes.com/" target="_blank" rel="noopener">Visit site</a>
+    </div>
+    <div class="shot"><img src="shots/deon-tapes.jpg" alt="Deon Tapes homepage"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>02</b> / 07</div>
+</section>
+
+<section class="client" data-brand="simplicare" data-who="SimpliCare · health tech">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 03 — SimpliCare</div>
+      <h2 class="rise">One scan. Clear results.</h2>
+      <p class="say rise">A Shopify storefront for a US–India health-tech brand selling medical devices and supplements. FDA-compliance copy, region-aware pricing, and a checkout that works in both markets.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Health technology</dd></div>
+        <div><dt>Built</dt><dd>Shopify · Liquid</dd></div>
+        <div><dt>Markets</dt><dd>USA · India</dd></div>
+      </dl>
+      <a class="cta rise" href="https://www.simplicare.us/en-in/pages/home-in" target="_blank" rel="noopener">Visit store</a>
+    </div>
+    <div class="shot"><img src="shots/simplicare.jpg" alt="SimpliCare storefront"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>03</b> / 07</div>
+</section>
+
+<section class="client" data-brand="pharmatiya" data-who="Pharmatiya · health economics">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 04 — Pharmatiya Health</div>
+      <h2 class="rise">Evidence that holds up when it is challenged</h2>
+      <p class="say rise">A site for a health-economics consultancy. Forty-seven publications made searchable and verifiable, a study finder compiled at build time, and a team CMS that degrades gracefully when a headshot is missing.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Health economics</dd></div>
+        <div><dt>Built</dt><dd>Next.js · TypeScript</dd></div>
+        <div><dt>Record</dt><dd>47 publications</dd></div>
+      </dl>
+      <a class="cta rise" href="https://github.com/PalakAgrawal-git/Pharmatiya" target="_blank" rel="noopener">View build</a>
+    </div>
+    <div class="shot"><img src="shots/pharmatiya.jpg" alt="Pharmatiya Health homepage"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>04</b> / 07</div>
+</section>
+
+<section class="client" data-brand="tribal" data-who="Tribal Zone · fashion jewellery">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 05 — Tribal Zone</div>
+      <h2 class="rise">All in one place</h2>
+      <p class="say rise">A storefront for a fashion-jewellery brand trading since 2003. Six collections with client-side filtering, a hover-zoom gallery and a cart drawer. Forty theme versions before the live cutover.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Fashion accessories</dd></div>
+        <div><dt>Catalogue</dt><dd>2,000+ styles</dd></div>
+        <div><dt>Iterations</dt><dd>40 versions</dd></div>
+      </dl>
+      <a class="cta rise" href="https://www.tribalzone.in/" target="_blank" rel="noopener">Visit store</a>
+    </div>
+    <div class="shot"><img src="shots/tribal-zone.jpg" alt="Tribal Zone storefront"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>05</b> / 07</div>
+</section>
+
+<section class="client" data-brand="dvoc" data-who="DVOC · vocational training">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 06 — DVOC Institute</div>
+      <h2 class="rise">Build your tech career from the ground up</h2>
+      <p class="say rise">A site for a vocational IT institute running three branches across Mumbai. Course catalogue, quiz flow, a support chatbot, and NSDC and MKCL partner integrations.</p>
+      <dl class="facts rise">
+        <div><dt>Sector</dt><dd>Vocational education</dd></div>
+        <div><dt>Reach</dt><dd>30,000 students</dd></div>
+        <div><dt>Built</dt><dd>HTML · Python · Pages</dd></div>
+      </dl>
+      <a class="cta rise" href="https://dvoc.in/" target="_blank" rel="noopener">Visit site</a>
+    </div>
+    <div class="shot"><img src="shots/dvoc.jpg" alt="DVOC Institute homepage"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>06</b> / 07</div>
+</section>
+
+<section class="client" data-brand="memory" data-who="Memory Lane · my own">
+  <div class="inner">
+    <div>
+      <div class="eyebrow rise"><s></s>Client 07 — Memory Lane (mine)</div>
+      <h2 class="rise">One orb a day, coloured by how the day felt</h2>
+      <p class="say rise">The one with no client. A journalling app where each day becomes a coloured orb — circles, streaks, and a journey view of the days that mattered. Expo front to back, Supabase behind it.</p>
+      <dl class="facts rise">
+        <div><dt>Client</dt><dd>None — mine</dd></div>
+        <div><dt>Built</dt><dd>React Native · Expo</dd></div>
+        <div><dt>Backend</dt><dd>Supabase</dd></div>
+      </dl>
+      <a class="cta rise" href="https://github.com/smeetkataria7-cmyk/memory-lane" target="_blank" rel="noopener">View repo</a>
+    </div>
+    <div class="shot"><img src="shots/memory-lane.jpg" alt="Memory Lane sign-in screen"><div class="shutters" aria-hidden="true"></div></div>
+  </div>
+  <div class="count"><b>07</b> / 07</div>
+</section>
+
+<!-- ════ BACK TO BARE ════ -->
+<section class="bare">
+  <div class="inner">
+    <p class="note">And back to nothing</p>
+    <h1>That is the job.</h1>
+    <p>Seven brands, seven typefaces, seven colour systems — none of them mine. Jewellery, medical devices, industrial adhesives, health economics, vocational training. The work is being fluent in a language you did not invent, quickly, and leaving no fingerprints.</p>
+    <p>Behind all seven it is the same stack and the same person: Next.js, TypeScript, Supabase, Shopify Liquid, Python, and 600 logged hours across Somaiya Sports Academy, DVOC and Vaelo Creative.</p>
+    <hr>
+    <p>
+      <a href="mailto:smeet.kataria@somaiya.edu">smeet.kataria@somaiya.edu</a> ·
+      <a href="https://github.com/smeetkataria7-cmyk" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/smeet-kataria-89210b405" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="index.html">the designed version</a>
+    </p>
+    <p class="note" style="margin-top:22px">Open to internships · remote or Mumbai</p>
+  </div>
+</section>
+
+<script>
+(function(){
+'use strict';
+var doc=document,body=doc.body;
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* shutters, built here so the markup stays free of seven empty divs */
+doc.querySelectorAll('.shutters').forEach(function(bar){
+  for(var i=0;i<6;i++){
+    var s=doc.createElement('i');s.style.setProperty('--d',i);bar.appendChild(s);
+  }
+});
+
+/* The skin follows whichever section owns the middle of the screen. Reading a
+   single winner rather than toggling on enter/leave means fast scrolling and
+   scrolling back up both land on the same answer. */
+var sections=[].slice.call(doc.querySelectorAll('section'));
+var who=doc.getElementById('who'),bar=doc.getElementById('bar');
+var current=null,pending=false;
+
+function apply(){
+  pending=false;
+  var mid=innerHeight*0.5,win=null;
+  for(var i=0;i<sections.length;i++){
+    var r=sections[i].getBoundingClientRect();
+    if(r.top<=mid&&r.bottom>=mid){win=sections[i];break;}
+  }
+  if(!win)win=sections[scrollY<innerHeight?0:sections.length-1];
+
+  var brand=win.dataset.brand||'';
+  if(brand!==current){
+    current=brand;
+    if(brand)body.setAttribute('data-brand',brand);
+    else body.removeAttribute('data-brand');
+    who.textContent=win.dataset.who||'no client · unstyled';
+  }
+  win.classList.add('on');
+
+  var h=doc.documentElement,max=(h.scrollHeight||body.scrollHeight)-h.clientHeight;
+  bar.style.transform='scaleX('+(max>0?Math.min(1,scrollY/max):0).toFixed(4)+')';
+}
+
+/* Gating on a flag only requestAnimationFrame can clear is a trap: when rAF is
+   starved — an occluded window, a background tab — the flag is never reset and
+   every later scroll is dropped, freezing the page on whichever skin was last
+   applied. The timer is the escape hatch, so a starved frame cannot wedge it. */
+function schedule(){
+  if(pending)return;
+  pending=true;
+  var ran=false;
+  requestAnimationFrame(function(){ran=true;apply();});
+  setTimeout(function(){if(!ran&&pending)apply();},250);
+}
+addEventListener('scroll',schedule,{passive:true});
+addEventListener('resize',schedule);
+addEventListener('load',apply);
+addEventListener('visibilitychange',function(){if(!doc.hidden)apply();});
+
+/* a section reveals once its top clears three quarters of the screen, so the
+   rise and the shutters play in front of the reader rather than below them */
+if(reduce)sections.forEach(function(s){s.classList.add('on');});
+else{
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});
+  },{threshold:0,rootMargin:'0px 0px -25% 0px'});
+  sections.forEach(function(s){io.observe(s);});
+}
+apply();
+})();
+</script>
+</body>
+</html>

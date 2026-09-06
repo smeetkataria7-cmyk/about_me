@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>From JEE to Shipping Production Code</title>
 <meta name="description" content="The milestones, internships and projects that took Smeet Kataria from entrance exams to shipping production software — a scroll-driven timeline.">
-<meta name="theme-color" content="#12100c">
+<meta name="theme-color" content="#07070a">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%2312100c'/><text x='50' y='70' font-size='58' font-family='Georgia,serif' fill='%23b8443a' text-anchor='middle'>S</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/theme.css?v=1788675474">
+<link rel="stylesheet" href="assets/theme.css?v=1788683712">
 <style>
 /* ── page-specific ── */
 .hero{position:relative;z-index:1;
@@ -23,7 +23,7 @@
 .hero-meta{display:flex;gap:14px;align-items:center;margin-bottom:clamp(24px,4vh,38px);}
 .hero-meta .dot{width:6px;height:6px;border-radius:50%;background:var(--ox);
   animation:pulse 2.4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(184,68,58,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(184,68,58,0);}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(242,132,60,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(242,132,60,0);}}
 .hero-cols{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
   gap:clamp(26px,5vw,72px);align-items:end;}
 @media(max-width:860px){.hero-cols{grid-template-columns:1fr;gap:28px;}}
@@ -38,13 +38,13 @@
   background-size:2px 16px;opacity:.35;}
 .route-fill{position:absolute;left:clamp(14px,2.2vw,34px);top:0;width:2px;height:0;
   background:linear-gradient(180deg,var(--ox),var(--ox-hi));
-  box-shadow:0 0 14px rgba(184,68,58,.5);transition:height .18s linear;}
+  box-shadow:0 0 14px rgba(242,132,60,.5);transition:height .18s linear;}
 /* the marker that rides the route */
 .route-marker{position:absolute;left:clamp(14px,2.2vw,34px);top:0;width:2px;height:0;
   pointer-events:none;transition:height .18s linear;}
 .route-marker i{position:absolute;bottom:-7px;left:50%;width:13px;height:13px;
   margin-left:-6.5px;border-radius:50%;background:var(--ox);
-  box-shadow:0 0 0 4px rgba(184,68,58,.18),0 0 22px rgba(184,68,58,.7);}
+  box-shadow:0 0 0 4px rgba(242,132,60,.18),0 0 22px rgba(242,132,60,.7);}
 
 .stop{position:relative;padding:clamp(26px,4vw,44px) 0;}
 .stop::before{content:'';position:absolute;
@@ -53,7 +53,7 @@
   width:12px;height:12px;border-radius:50%;background:var(--ink);
   border:2px solid var(--bone-3);z-index:2;transition:all .55s var(--spring);}
 .stop.lit::before{border-color:var(--ox);background:var(--ox);
-  box-shadow:0 0 0 5px rgba(184,68,58,.14);}
+  box-shadow:0 0 0 5px rgba(242,132,60,.14);}
 .stop-when{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--bone-3);margin-bottom:10px;
   display:flex;align-items:center;gap:11px;flex-wrap:wrap;}
@@ -67,8 +67,8 @@
   max-width:62ch;margin-bottom:16px;}
 .stop-win{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);
   font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ox-hi);
-  padding:6px 12px;border:1px solid rgba(184,68,58,.32);border-radius:2px;
-  background:rgba(184,68,58,.06);margin-bottom:16px;}
+  padding:6px 12px;border:1px solid rgba(242,132,60,.32);border-radius:2px;
+  background:rgba(242,132,60,.06);margin-bottom:16px;}
 .stop.now .stop-title{color:var(--ox);}
 
 /* finish */
@@ -310,7 +310,7 @@
   <span>Thane, Mumbai · India</span>
 </footer>
 
-<script src="assets/motion.js?v=1788675474"></script>
+<script src="assets/motion.js?v=1788683712"></script>
 <script>
 /* The route line fills with scroll and each stop lights as it is passed.
    Driven off the shared pump so it shares one rAF with everything else. */

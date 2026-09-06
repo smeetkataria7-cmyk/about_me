@@ -368,6 +368,74 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
   });
 })();
 
+/* ── BLOOM ── the light source behind the hero. Layered radial plumes drawn
+   additively on a canvas: cheap enough to run at a fraction of the real pixel
+   size and scaled up, which also gives the softness for free. It leans toward
+   the pointer, drifts on its own, and dims as the hero scrolls away. */
+(function(){
+  var cv=doc.querySelector('[data-bloom]');
+  if(!cv||!cv.getContext)return;
+  var ctx=cv.getContext('2d'),W=0,H=0,live=true;
+  var SCALE=7;                       /* draw small, upscale — the blur is free */
+
+  var plumes=[
+    {x:.42,y:.44,r:.62,c:'242,132,60',  a:.55,sx:.00019,sy:.00013,p:0},
+    {x:.62,y:.52,r:.50,c:'255,161,92',  a:.42,sx:-.00015,sy:.00021,p:2.1},
+    {x:.34,y:.62,r:.44,c:'124,92,255',  a:.30,sx:.00022,sy:-.00017,p:4.2},
+    {x:.72,y:.34,r:.36,c:'242,192,124', a:.26,sx:-.00012,sy:-.00019,p:1.3},
+    {x:.50,y:.70,r:.30,c:'226,80,60',   a:.24,sx:.00016,sy:.00011,p:3.4}
+  ];
+  var px=.5,py=.5,tx=.5,ty=.5;
+  if(matchMedia('(hover:hover)').matches&&!reduce)
+    addEventListener('pointermove',function(e){
+      tx=e.clientX/innerWidth;ty=e.clientY/innerHeight;
+    },{passive:true});
+
+  function size(){
+    W=cv.width=Math.max(1,Math.round(cv.clientWidth/SCALE));
+    H=cv.height=Math.max(1,Math.round(cv.clientHeight/SCALE));
+  }
+  size();addEventListener('resize',size);
+
+  function paint(t){
+    px+=(tx-px)*.045;py+=(ty-py)*.045;      /* the lean lags the pointer */
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(var i=0;i<plumes.length;i++){
+      var pl=plumes[i];
+      var lean=(i%2?-1:1)*.05;
+      var cx=(pl.x+Math.sin(t*pl.sx+pl.p)*.14+(px-.5)*lean)*W;
+      var cy=(pl.y+Math.cos(t*pl.sy+pl.p)*.12+(py-.5)*lean)*H;
+      var rad=pl.r*Math.max(W,H)*(.86+Math.sin(t*.00022+pl.p)*.14);
+      var g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
+      g.addColorStop(0,'rgba('+pl.c+','+pl.a+')');
+      g.addColorStop(.45,'rgba('+pl.c+','+(pl.a*.35).toFixed(3)+')');
+      g.addColorStop(1,'rgba('+pl.c+',0)');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalCompositeOperation='source-over';
+  }
+
+  if(reduce){paint(0);return;}
+  (function draw(t){if(live){paint(t);requestAnimationFrame(draw);}})(0);
+  doc.addEventListener('visibilitychange',function(){
+    live=!doc.hidden;
+    if(live)requestAnimationFrame(function d(t){if(live){paint(t);requestAnimationFrame(d);}});
+  });
+
+  /* the bloom sinks and dims as the hero leaves, so it reads as a light source
+     the page moves past rather than a texture stuck to the viewport */
+  var host=cv.parentElement;
+  onScroll(function(){
+    var y=scrollY,vh=innerHeight;
+    if(y>vh*1.25)return;
+    var p=Math.min(1,y/vh);
+    host.style.opacity=Math.max(0,1-p*.85).toFixed(3);
+    host.style.transform='translateY('+(y*.32).toFixed(1)+'px) scale('+(1+p*.14).toFixed(3)+')';
+  });
+})();
+
 /* ── SLICED REVEAL ── shutters built in script over anything [data-slices],
    lifting in sequence so the image behind builds in bands. The count comes
    from the attribute so a narrow tile can use fewer. */

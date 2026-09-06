@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smeet Kataria — AI-Enabled Software Engineer</title>
 <meta name="description" content="Smeet Kataria — AI-Enabled Software Engineer at Vaelo Creative, Mumbai. Production software across healthcare, e-commerce and agency platforms.">
-<meta name="theme-color" content="#12100c">
+<meta name="theme-color" content="#07070a">
 <meta property="og:title" content="Smeet Kataria — AI-Enabled Software Engineer">
 <meta property="og:description" content="Production software across healthcare, e-commerce and agency platforms. Currently at Vaelo Creative, Mumbai.">
 <meta property="og:type" content="website">
@@ -13,19 +13,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/theme.css?v=1788675474">
+<link rel="stylesheet" href="assets/theme.css?v=1788683712">
 <style>
 /* ── page-specific: everything shared lives in assets/theme.css ── */
 
 /* HERO */
-.hero{position:relative;z-index:1;
-  padding:clamp(130px,20vh,190px) var(--pad) clamp(60px,10vh,110px);}
-.hero-grid{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-  mask-image:linear-gradient(180deg,transparent 40%,#000 100%);
-  -webkit-mask-image:linear-gradient(180deg,transparent 40%,#000 100%);}
+.hero{position:relative;z-index:1;overflow:hidden;
+  padding:clamp(150px,24vh,220px) var(--pad) clamp(70px,12vh,130px);}
+.hero-grid{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+  mask-image:linear-gradient(180deg,transparent 46%,#000 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 46%,#000 100%);}
 .hero-grid i{position:absolute;left:-60%;right:-60%;bottom:-45%;height:130%;
-  background-image:linear-gradient(rgba(195,154,95,.13) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(195,154,95,.13) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(242,132,60,.10) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(242,132,60,.10) 1px,transparent 1px);
   background-size:72px 72px;transform:perspective(320px) rotateX(70deg);
   transform-origin:bottom center;animation:gridDrift 16s linear infinite;}
 @keyframes gridDrift{from{background-position:0 0;}to{background-position:0 72px;}}
@@ -33,7 +33,7 @@
 .hero-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:clamp(24px,4vh,40px);}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--ox);flex:0 0 auto;
   animation:pulse 2.4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(184,68,58,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(184,68,58,0);}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(242,132,60,.5);}50%{opacity:.7;box-shadow:0 0 0 7px rgba(242,132,60,0);}}
 .hero h1{font-family:var(--serif);font-weight:400;
   font-size:clamp(3rem,10.5vw,9rem);line-height:.9;letter-spacing:-.028em;
   margin-bottom:clamp(28px,4.5vh,48px);}
@@ -68,7 +68,7 @@ body.lit .scroll-cue{opacity:1;}
 @media(max-width:800px){.fig:nth-child(2n){border-right:none;}}
 .fig::before{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ox);
   transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease);}
-.fig:hover{background:rgba(236,228,216,.022);}
+.fig:hover{background:rgba(244,242,240,.022);}
 .fig:hover::before{transform:scaleX(1);}
 .fig-n{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.9rem);line-height:.92;
   color:var(--bone);font-variant-numeric:tabular-nums;letter-spacing:-.025em;
@@ -93,10 +93,23 @@ body.lit .scroll-cue{opacity:1;}
 .rail{display:flex;gap:clamp(16px,2.2vw,30px);padding:0 var(--pad);will-change:transform;}
 .card{flex:0 0 clamp(300px,34vw,470px);text-decoration:none;color:inherit;
   display:flex;flex-direction:column;position:relative;will-change:transform;}
-.card-frame{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--ink-1);
-  border:1px solid var(--rule);border-radius:3px;}
+.card-frame{position:relative;aspect-ratio:16/10;overflow:hidden;
+  background:linear-gradient(168deg,var(--ink-2),var(--ink-1));
+  border:1px solid var(--rule);border-radius:6px;
+  box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 26px 54px -30px rgba(0,0,0,.95);
+  transition:box-shadow .6s var(--ease),border-color .5s;}
+.card:hover .card-frame{
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,
+             0 34px 64px -28px rgba(0,0,0,1),
+             0 0 60px -18px rgba(242,132,60,.32);}
+/* the sweep — a highlight that crosses the tile as the pointer arrives */
+.card-frame > .gloss{position:absolute;top:-60%;bottom:-60%;width:44%;left:-70%;
+  z-index:4;pointer-events:none;transform:rotate(14deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);
+  transition:left .9s cubic-bezier(.3,.7,.3,1);}
+.card:hover .card-frame > .gloss{left:120%;}
 .card-frame::after{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
-  background:linear-gradient(180deg,rgba(18,16,12,.10) 0%,rgba(18,16,12,.60) 100%);
+  background:linear-gradient(180deg,rgba(7,7,10,.10) 0%,rgba(7,7,10,.60) 100%);
   opacity:0;transition:opacity .6s var(--ease);}
 .card-frame.has-shot::after{opacity:1;}
 .card:hover .card-frame{border-color:var(--rule-2);}
@@ -113,9 +126,9 @@ body.lit .scroll-cue{opacity:1;}
   font-size:.63rem;letter-spacing:.15em;color:var(--bone);mix-blend-mode:difference;}
 .card-flag{position:absolute;top:13px;right:15px;z-index:4;font-family:var(--mono);
   font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;padding:4px 10px;
-  border-radius:2px;background:rgba(18,16,12,.7);border:1px solid var(--rule-2);
+  border-radius:2px;background:rgba(7,7,10,.7);border:1px solid var(--rule-2);
   color:var(--bone-2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-.card-flag.live{color:var(--ox-hi);border-color:rgba(184,68,58,.4);}
+.card-flag.live{color:var(--ox-hi);border-color:rgba(242,132,60,.4);}
 .card-body{padding:20px 2px 0;}
 .card-kicker{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.62rem;
   letter-spacing:.15em;text-transform:uppercase;color:var(--brass);margin-bottom:9px;}
@@ -143,7 +156,7 @@ body.lit .scroll-cue{opacity:1;}
 .timeline{position:relative;padding-left:clamp(26px,4vw,52px);}
 .timeline::before{content:'';position:absolute;left:5px;top:14px;bottom:14px;width:1px;background:var(--rule);}
 .tl-fill{position:absolute;left:5px;top:14px;width:1px;height:0;
-  background:linear-gradient(180deg,var(--ox),rgba(184,68,58,.15));transition:height .2s linear;}
+  background:linear-gradient(180deg,var(--ox),rgba(242,132,60,.15));transition:height .2s linear;}
 .entry{position:relative;padding:clamp(22px,3.4vw,34px) 0;border-bottom:1px solid var(--rule);
   transition:padding-left .5s var(--spring);}
 .entry:last-child{border-bottom:none;}
@@ -152,7 +165,7 @@ body.lit .scroll-cue{opacity:1;}
   top:calc(clamp(22px,3.4vw,34px) + 7px);width:9px;height:9px;border-radius:50%;
   background:var(--ink);border:1px solid var(--bone-3);
   transition:all .55s var(--spring);z-index:2;}
-.entry.lit::before{background:var(--ox);border-color:var(--ox);box-shadow:0 0 0 4px rgba(184,68,58,.14);}
+.entry.lit::before{background:var(--ox);border-color:var(--ox);box-shadow:0 0 0 4px rgba(242,132,60,.14);}
 .entry-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
   flex-wrap:wrap;margin-bottom:5px;}
 .entry-role{font-family:var(--serif);font-size:clamp(1.15rem,2.3vw,1.7rem);line-height:1.14;
@@ -191,7 +204,7 @@ body.lit .scroll-cue{opacity:1;}
   transition:background .5s var(--ease);min-height:150px;display:flex;flex-direction:column;}
 .by::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
   transition:opacity .5s;
-  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(184,68,58,.13),transparent 62%);}
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(242,132,60,.13),transparent 62%);}
 .by:hover{background:var(--ink-1);}
 .by:hover::before{opacity:1;}
 .by h4{font-family:var(--serif);font-size:1.24rem;margin-bottom:8px;position:relative;
@@ -249,6 +262,7 @@ body.lit .scroll-cue{opacity:1;}
 </div>
 
 <header class="hero" id="top">
+  <div class="bloom" aria-hidden="true"><canvas data-bloom></canvas></div>
   <div class="hero-grid" aria-hidden="true"><i></i></div>
   <div class="hero-inner">
     <div class="hero-eyebrow">
@@ -306,11 +320,11 @@ body.lit .scroll-cue{opacity:1;}
       <div class="rail" id="rail">
 
         <a class="card" href="https://www.vaelocreative.com/" target="_blank" rel="noopener" data-cursor="Visit" data-shot="shots/vaelo.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">01</span><span class="card-flag live">Live</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
-              <path class="draw" d="M-10 200 C 70 200, 80 100, 160 100 S 250 200, 330 200 S 420 100, 490 100" stroke="#b8443a" stroke-width="1.5" opacity=".8"/>
-              <path class="draw" style="transition-delay:.14s" d="M-10 226 C 70 226, 80 126, 160 126 S 250 226, 330 226 S 420 126, 490 126" stroke="#c39a5f" stroke-width="1" opacity=".4"/>
+              <path class="draw" d="M-10 200 C 70 200, 80 100, 160 100 S 250 200, 330 200 S 420 100, 490 100" stroke="#f2843c" stroke-width="1.5" opacity=".8"/>
+              <path class="draw" style="transition-delay:.14s" d="M-10 226 C 70 226, 80 126, 160 126 S 250 226, 330 226 S 420 126, 490 126" stroke="#f2c07c" stroke-width="1" opacity=".4"/>
             </svg>
           </div>
           <div class="card-body">
@@ -322,13 +336,13 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://deontapes.com/" target="_blank" rel="noopener" data-cursor="Visit" data-shot="shots/deon-tapes.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">02</span><span class="card-flag live">Live</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
-              <g stroke="#b8443a" stroke-width="1">
-                <rect class="pop" style="--d:0" x="40" y="72" width="390" height="30" fill="rgba(184,68,58,.10)"/>
-                <rect class="pop" style="--d:1" x="64" y="118" width="342" height="30" fill="rgba(184,68,58,.16)"/>
-                <rect class="pop" style="--d:2" x="88" y="164" width="294" height="30" fill="rgba(184,68,58,.09)"/>
+              <g stroke="#f2843c" stroke-width="1">
+                <rect class="pop" style="--d:0" x="40" y="72" width="390" height="30" fill="rgba(242,132,60,.10)"/>
+                <rect class="pop" style="--d:1" x="64" y="118" width="342" height="30" fill="rgba(242,132,60,.16)"/>
+                <rect class="pop" style="--d:2" x="88" y="164" width="294" height="30" fill="rgba(242,132,60,.09)"/>
               </g>
             </svg>
           </div>
@@ -341,11 +355,11 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://www.simplicare.us/en-in/pages/home-in" target="_blank" rel="noopener" data-cursor="Visit" data-shot="shots/simplicare.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">03</span><span class="card-flag live">Live</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
               <path class="draw" d="M-10 155 H 120 L 136 155 L 150 100 L 168 215 L 186 132 L 200 155 H 268 L 282 155 L 296 112 L 312 200 L 328 155 H 490"
-                    stroke="#b8443a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+                    stroke="#f2843c" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
             </svg>
           </div>
           <div class="card-body">
@@ -357,14 +371,14 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://github.com/PalakAgrawal-git/Pharmatiya" target="_blank" rel="noopener" data-cursor="Repo" data-shot="shots/pharmatiya.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">04</span><span class="card-flag">In build</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
-              <g stroke="#c39a5f" stroke-width="1" opacity=".5">
+              <g stroke="#f2c07c" stroke-width="1" opacity=".5">
                 <path class="draw" d="M140 95 L235 147 L140 199 Z"/>
                 <path class="draw" style="transition-delay:.12s" d="M235 147 L330 95 L330 199 Z"/>
               </g>
-              <g fill="#b8443a">
+              <g fill="#f2843c">
                 <circle class="pop" style="--d:3" cx="140" cy="95" r="4"/><circle class="pop" style="--d:4" cx="235" cy="147" r="5"/>
                 <circle class="pop" style="--d:5" cx="140" cy="199" r="4"/><circle class="pop" style="--d:6" cx="330" cy="95" r="4"/>
                 <circle class="pop" style="--d:7" cx="330" cy="199" r="4"/>
@@ -380,14 +394,14 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://www.tribalzone.in/" target="_blank" rel="noopener" data-cursor="Visit" data-shot="shots/tribal-zone.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">05</span><span class="card-flag live">Live</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
-              <g stroke="#c39a5f" fill="none">
+              <g stroke="#f2c07c" fill="none">
                 <circle class="draw" cx="235" cy="147" r="82" stroke-width="1" opacity=".45"/>
                 <circle class="draw" style="transition-delay:.16s" cx="235" cy="147" r="54" stroke-width="1" opacity=".7"/>
               </g>
-              <g fill="#b8443a">
+              <g fill="#f2843c">
                 <circle class="pop" style="--d:3" cx="235" cy="65" r="3.5"/><circle class="pop" style="--d:4" cx="293" cy="89" r="3"/>
                 <circle class="pop" style="--d:5" cx="317" cy="147" r="3.5"/><circle class="pop" style="--d:6" cx="293" cy="205" r="3"/>
                 <circle class="pop" style="--d:7" cx="235" cy="229" r="3.5"/><circle class="pop" style="--d:8" cx="177" cy="205" r="3"/>
@@ -404,18 +418,18 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://dvoc.in/" target="_blank" rel="noopener" data-cursor="Visit" data-shot="shots/dvoc.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">06</span><span class="card-flag live">Live</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true">
-              <g stroke="#c39a5f" stroke-width="1">
-                <rect class="pop" style="--d:0" x="106" y="88" width="80" height="52" fill="rgba(195,154,95,.09)"/>
-                <rect class="pop" style="--d:1" x="196" y="88" width="80" height="52" fill="rgba(184,68,58,.14)"/>
-                <rect class="pop" style="--d:2" x="286" y="88" width="80" height="52" fill="rgba(195,154,95,.09)"/>
-                <rect class="pop" style="--d:3" x="106" y="152" width="80" height="52" fill="rgba(195,154,95,.06)"/>
-                <rect class="pop" style="--d:4" x="196" y="152" width="80" height="52" fill="rgba(195,154,95,.09)"/>
-                <rect class="pop" style="--d:5" x="286" y="152" width="80" height="52" fill="rgba(195,154,95,.06)"/>
+              <g stroke="#f2c07c" stroke-width="1">
+                <rect class="pop" style="--d:0" x="106" y="88" width="80" height="52" fill="rgba(242,192,124,.09)"/>
+                <rect class="pop" style="--d:1" x="196" y="88" width="80" height="52" fill="rgba(242,132,60,.14)"/>
+                <rect class="pop" style="--d:2" x="286" y="88" width="80" height="52" fill="rgba(242,192,124,.09)"/>
+                <rect class="pop" style="--d:3" x="106" y="152" width="80" height="52" fill="rgba(242,192,124,.06)"/>
+                <rect class="pop" style="--d:4" x="196" y="152" width="80" height="52" fill="rgba(242,192,124,.09)"/>
+                <rect class="pop" style="--d:5" x="286" y="152" width="80" height="52" fill="rgba(242,192,124,.06)"/>
               </g>
-              <path class="draw" style="transition-delay:.5s" d="M220 112 l10 11 l22 -22" stroke="#b8443a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="draw" style="transition-delay:.5s" d="M220 112 l10 11 l22 -22" stroke="#f2843c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="card-body">
@@ -427,7 +441,7 @@ body.lit .scroll-cue{opacity:1;}
         </a>
 
         <a class="card" href="https://github.com/smeetkataria7-cmyk/memory-lane" target="_blank" rel="noopener" data-cursor="Repo" data-shot="shots/memory-lane.jpg">
-          <div class="card-frame" data-slices="7">
+          <div class="card-frame" data-slices="7"><span class="gloss" aria-hidden="true"></span>
             <span class="card-idx">07</span><span class="card-flag">Personal</span>
             <svg class="card-art" viewBox="0 0 470 294" fill="none" aria-hidden="true"><g id="orbs"></g></svg>
           </div>
@@ -649,9 +663,9 @@ body.lit .scroll-cue{opacity:1;}
   <span>Thane, Mumbai · India</span>
 </footer>
 
-<script src="assets/motion.js?v=1788675474"></script>
+<script src="assets/motion.js?v=1788683712"></script>
 <script>
-/* ── page-specific: shared behaviour lives in assets/motion.js?v=1788675474 ── */
+/* ── page-specific: shared behaviour lives in assets/motion.js?v=1788683712 ── */
 (function(){
 'use strict';
 var doc=document,M=window.__motion,reduce=M?M.reduce:false;
@@ -714,7 +728,7 @@ var onScroll=M?M.onScroll:function(f){f();};
      loads instead of reshuffling on every visit */
   var orbs=doc.getElementById('orbs');
   if(orbs){
-    var hues=['#b8443a','#c39a5f','#8d6e8f','#5f7f78','#d4574a'],seed=11;
+    var hues=['#f2843c','#f2c07c','#8d6e8f','#5f7f78','#ffa15c'],seed=11;
     var rnd=function(){seed=(seed*9301+49297)%233280;return seed/233280;};
     for(var r=0;r<4;r++)for(var c=0;c<8;c++){
       var o=doc.createElementNS('http://www.w3.org/2000/svg','circle');
