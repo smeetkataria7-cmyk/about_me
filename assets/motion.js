@@ -178,27 +178,71 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
 })();
 
 /* ── SPLIT TITLES ── split in script so the markup stays plain text for
-   assistive tech until it runs; aria-label restores the reading ── */
+   assistive tech until it runs; aria-label restores the reading.
+   .sec-title is split automatically; anything else opts in with [data-split].
+   The hero opts in, so the very first thing on the page is the letter wave
+   rather than a whole line sliding as one block. ── */
 (function(){
-  var titles=[].slice.call(doc.querySelectorAll('.sec-title'));
+  var titles=[].slice.call(doc.querySelectorAll('.sec-title,[data-split]'));
   if(!titles.length||reduce)return;
-  titles.forEach(function(t){
-    var label=t.textContent,n=0,parts=[].slice.call(t.childNodes);
-    t.textContent='';t.setAttribute('aria-label',label);
-    parts.forEach(function(node){
-      var host=t;
-      if(node.nodeName==='EM'){host=doc.createElement('em');t.appendChild(host);}
+  /* One masked box per WORD, not per text node. A .split is inline-block with
+     overflow:hidden, so a whole line inside one box could never wrap and long
+     headings ran off the edge; words are separate boxes with real spaces
+     between them, so the line breaks normally and each word still masks its
+     own letters. Nested markup (em, the hero's line spans) is walked, so the
+     accent styling survives the split. */
+  var n=0;
+  function splitInto(host,text){
+    text.split(/(\s+)/).forEach(function(part){
+      if(!part)return;
+      if(/^\s+$/.test(part)){host.appendChild(doc.createTextNode(part));return;}
       var wrap=doc.createElement('span');
       wrap.className='split';wrap.setAttribute('aria-hidden','true');
-      host.appendChild(wrap);
-      node.textContent.split('').forEach(function(ch){
+      part.split('').forEach(function(ch){
         var b=doc.createElement('b');
-        if(ch===' '){b.className='sp';b.innerHTML='&nbsp;';}else b.textContent=ch;
-        b.style.setProperty('--i',n++);wrap.appendChild(b);
+        b.textContent=ch;
+        b.style.setProperty('--i',n++);
+        wrap.appendChild(b);
       });
+      host.appendChild(wrap);
     });
+  }
+  function walk(src,dest){
+    [].slice.call(src.childNodes).forEach(function(node){
+      if(node.nodeType===3){splitInto(dest,node.nodeValue);return;}
+      if(node.nodeType!==1){return;}
+      var clone=doc.createElement(node.nodeName);
+      for(var i=0;i<node.attributes.length;i++)
+        clone.setAttribute(node.attributes[i].name,node.attributes[i].value);
+      dest.appendChild(clone);
+      walk(node,clone);
+    });
+  }
+  titles.forEach(function(t){
+    var label=t.textContent.replace(/\s+/g,' ').trim();
+    var src=t.cloneNode(true);
+    t.textContent='';
+    t.setAttribute('aria-label',label);
+    n=0;
+    walk(src,t);
   });
   function light(t){t.querySelectorAll('.split').forEach(function(s){s.classList.add('on');});}
+
+  /* [data-split-now] plays on load rather than on scroll — the hero is already
+     on screen, so waiting for an intersection would mean it never runs */
+  var onLoad=titles.filter(function(t){return t.hasAttribute('data-split-now');});
+  onLoad.forEach(function(t){
+    var start=function(){setTimeout(function(){light(t);},260);};
+    if(doc.body.classList.contains('lit'))start();
+    else{
+      var wait=setInterval(function(){
+        if(doc.body.classList.contains('lit')){clearInterval(wait);start();}
+      },80);
+      setTimeout(function(){clearInterval(wait);light(t);},2600);  /* never stall */
+    }
+  });
+  titles=titles.filter(function(t){return !t.hasAttribute('data-split-now');});
+  if(!titles.length)return;
   /* A one-line heading is short, so a plain threshold is met the instant it
      peeks over the bottom edge and the letters rise off-screen. The negative
      bottom margin pulls the trigger line up to ~78% of the viewport, so the

@@ -200,7 +200,7 @@ body.lit .mask > i{transform:none;}
    of the travel in its first 130ms, so over a throw this short the letters
    simply appeared instead of moving. This one spends its time in the visible
    middle, and 45ms per character makes the sweep along the line readable. */
-.sec-title{perspective:900px;}
+.sec-title,[data-split]{perspective:900px;}
 .split{display:inline-block;overflow:hidden;vertical-align:bottom;
   padding-bottom:.08em;transform-style:preserve-3d;}
 .split > b{display:inline-block;font-weight:inherit;
