@@ -56,12 +56,23 @@ img{max-width:100%;display:block;}
   font-weight:300;line-height:1.62;}
 .serif{font-family:var(--serif);font-weight:400;}
 
-/* ══ CURTAIN ══ */
-.curtain{position:fixed;inset:0;z-index:9999;background:var(--ink);
+/* ══ CURTAIN ══ two panels that part sideways from the centre, rather than a
+   single sheet wiping upward — the split is the first thing the page does */
+.curtain{position:fixed;inset:0;z-index:9999;pointer-events:none;}
+.curtain-panel{position:absolute;top:0;height:100%;width:50.4%;background:var(--ink);
+  transition:transform 1.15s cubic-bezier(.72,0,.18,1);}
+.curtain-panel.l{left:0;}
+.curtain-panel.r{right:0;}
+.curtain-panel.r::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:var(--ox);opacity:0;transition:opacity .4s;}
+.curtain.go .curtain-panel.r::before{opacity:.7;}
+.curtain.up .curtain-panel.l{transform:translateX(-100.5%);}
+.curtain.up .curtain-panel.r{transform:translateX(100.5%);}
+.curtain-inner{position:absolute;inset:0;z-index:2;
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:0 var(--pad) clamp(30px,6vh,64px);
-  clip-path:inset(0 0 0 0);transition:clip-path .95s var(--ease);}
-.curtain.up{clip-path:inset(0 0 100% 0);}
+  transition:opacity .45s var(--ease);}
+.curtain.up .curtain-inner{opacity:0;}
 .curtain-sub{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--bone-3);margin-bottom:14px;
   opacity:0;transition:opacity .6s .2s;}
@@ -332,6 +343,34 @@ footer{padding:clamp(38px,6vh,60px) var(--pad);border-top:1px solid var(--rule);
   background:rgba(184,68,58,.16);mix-blend-mode:color;opacity:1;transition:opacity .7s var(--ease);}
 .bands:hover .band-item img{filter:grayscale(0) contrast(1) brightness(.95);}
 .bands:hover .band-item::after{opacity:0;}
+
+/* ══ SLICED REVEAL ══ a panel of vertical shutters over an image, lifting away
+   one after the next so the picture builds in bands instead of fading in.
+   Built in script from [data-slices] so the markup stays clean. */
+.slices{position:absolute;inset:0;z-index:5;display:flex;pointer-events:none;}
+.slices i{flex:1;background:var(--ink);transform:translateY(0);
+  transition:transform .85s cubic-bezier(.72,0,.18,1);
+  transition-delay:calc(var(--d,0)*65ms);}
+.slices i + i{border-left:1px solid var(--ink);}
+.seen > .slices i,.slices.open i{transform:translateY(-101%);}
+
+/* ══ SPLIT SCREEN ══ a panel that tears across the middle, the halves sliding
+   apart to uncover what sits behind them */
+.tear{position:relative;overflow:hidden;}
+.tear-panels{position:absolute;inset:0;z-index:3;pointer-events:none;}
+.tear-panels i{position:absolute;left:0;width:100%;height:50.4%;
+  background:var(--ink-1);
+  transition:transform 1.15s cubic-bezier(.72,0,.18,1);}
+.tear-panels i.t{top:0;border-bottom:1px solid var(--ox);}
+.tear-panels i.b{bottom:0;}
+.tear.open .tear-panels i.t{transform:translateY(-100.5%);}
+.tear.open .tear-panels i.b{transform:translateY(100.5%);}
+/* the label carried on the closed panel, gone once it opens */
+.tear-face{position:absolute;inset:0;z-index:4;display:flex;align-items:center;
+  justify-content:center;pointer-events:none;
+  font-family:var(--serif);font-size:clamp(1.6rem,6vw,4.4rem);color:var(--bone-3);
+  letter-spacing:-.02em;transition:opacity .5s var(--ease);}
+.tear.open .tear-face{opacity:0;}
 
 /* ══ GIANT WORDMARK ══ an oversized name running edge to edge, outlined so it
    reads as texture rather than a second headline competing with the real one */

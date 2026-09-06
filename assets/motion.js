@@ -368,6 +368,81 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
   });
 })();
 
+/* ── SLICED REVEAL ── shutters built in script over anything [data-slices],
+   lifting in sequence so the image behind builds in bands. The count comes
+   from the attribute so a narrow tile can use fewer. */
+(function(){
+  var hosts=[].slice.call(doc.querySelectorAll('[data-slices]'));
+  if(!hosts.length)return;
+  hosts.forEach(function(host){
+    var n=parseInt(host.dataset.slices,10)||8;
+    var bar=doc.createElement('div');
+    bar.className='slices';bar.setAttribute('aria-hidden','true');
+    for(var i=0;i<n;i++){
+      var s=doc.createElement('i');
+      s.style.setProperty('--d',i);
+      bar.appendChild(s);
+    }
+    host.appendChild(bar);
+  });
+  if(reduce){hosts.forEach(function(h){h.querySelector('.slices').classList.add('open');});return;}
+  function open(h){
+    var bar=h.querySelector('.slices');
+    if(!bar.classList.contains('open'))bar.classList.add('open');
+  }
+
+  /* A tile in the work rail travels sideways inside a pinned viewport: it is
+     vertically on screen the whole time, so a vertical trigger fires while it
+     is still far off to the right and the shutters are long gone before anyone
+     sees them. Those tiles are watched horizontally instead, and unshutter as
+     they actually slide into frame. Everything else uses a normal observer. */
+  var rail=doc.getElementById('railWrap');
+  var inRail=[],outside=[];
+  hosts.forEach(function(h){(rail&&rail.contains(h)?inRail:outside).push(h);});
+
+  if(outside.length){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){open(e.target);io.unobserve(e.target);}});
+    },{threshold:0,rootMargin:'0px 0px -12% 0px'});
+    outside.forEach(function(h){io.observe(h);});
+    onScroll(function(){
+      outside.forEach(function(h){
+        if(h.getBoundingClientRect().top<0)open(h);
+      });
+    });
+  }
+
+  if(inRail.length)onScroll(function(){
+    inRail.forEach(function(h){
+      var r=h.getBoundingClientRect();
+      if(r.left<innerWidth*.92&&r.right>innerWidth*.06)open(h);
+    });
+  });
+})();
+
+/* ── SPLIT SCREEN ── the panel tears across the middle and the halves slide
+   apart to uncover what is behind them */
+(function(){
+  var tears=[].slice.call(doc.querySelectorAll('.tear'));
+  if(!tears.length)return;
+  if(reduce){tears.forEach(function(t){t.classList.add('open');});return;}
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      var el=e.target;
+      setTimeout(function(){el.classList.add('open');},180);
+      io.unobserve(el);
+    });
+  },{threshold:0,rootMargin:'0px 0px -28% 0px'});
+  tears.forEach(function(t){io.observe(t);});
+  onScroll(function(){
+    tears.forEach(function(t){
+      if(t.classList.contains('open'))return;
+      if(t.getBoundingClientRect().top<0){t.classList.add('open');io.unobserve(t);}
+    });
+  });
+})();
+
 /* ── SCRAMBLE ── nav labels churn through glyphs before settling back.
    The original text is kept on the node so a half-finished run can always be
    restored, and each element runs at most one loop at a time. */
