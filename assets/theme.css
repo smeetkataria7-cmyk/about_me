@@ -191,14 +191,27 @@ body.menu .mobile-menu{clip-path:inset(0 0 0 0);pointer-events:auto;}
 /* ══ MASK + SPLIT ══ */
 .mask{display:block;overflow:hidden;padding-bottom:.06em;}
 .mask > i{display:block;font-style:normal;transform:translateY(106%);
-  transition:transform 1.15s var(--ease);}
+  transition:transform 1.25s cubic-bezier(.25,.46,.2,1);}
 body.lit .mask > i{transform:none;}
-.mask:nth-of-type(2) > i{transition-delay:.11s;}
-.mask:nth-of-type(3) > i{transition-delay:.22s;}
-.split{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.055em;}
-.split > b{display:inline-block;font-weight:inherit;transform:translateY(112%);
-  transition:transform .95s var(--ease);transition-delay:calc(var(--i,0)*24ms);}
-.split.on > b{transform:none;}
+.mask:nth-of-type(2) > i{transition-delay:.16s;}
+.mask:nth-of-type(3) > i{transition-delay:.32s;}
+/* ── SPLIT ── letters tumble up into place, one after the next.
+   The curve is deliberately NOT --ease: that is an expo-out that covers ~78%
+   of the travel in its first 130ms, so over a throw this short the letters
+   simply appeared instead of moving. This one spends its time in the visible
+   middle, and 45ms per character makes the sweep along the line readable. */
+.sec-title{perspective:900px;}
+.split{display:inline-block;overflow:hidden;vertical-align:bottom;
+  padding-bottom:.08em;transform-style:preserve-3d;}
+.split > b{display:inline-block;font-weight:inherit;
+  transform:translateY(115%) rotateX(-78deg) scale(.92);
+  transform-origin:50% 0%;opacity:0;
+  transition:transform 1.05s cubic-bezier(.25,.46,.2,1),
+             opacity .55s ease-out,
+             color .5s ease-out;
+  transition-delay:calc(var(--i,0)*45ms);
+  color:var(--ox);}
+.split.on > b{transform:none;opacity:1;color:inherit;}
 .split > b.sp{width:.26em;}
 
 /* ══ BUTTONS ══ */
@@ -319,6 +332,24 @@ footer{padding:clamp(38px,6vh,60px) var(--pad);border-top:1px solid var(--rule);
   background:rgba(184,68,58,.16);mix-blend-mode:color;opacity:1;transition:opacity .7s var(--ease);}
 .bands:hover .band-item img{filter:grayscale(0) contrast(1) brightness(.95);}
 .bands:hover .band-item::after{opacity:0;}
+
+/* ══ GIANT WORDMARK ══ an oversized name running edge to edge, outlined so it
+   reads as texture rather than a second headline competing with the real one */
+.wordmark{overflow:hidden;padding:clamp(30px,5vh,60px) 0;position:relative;z-index:1;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.wordmark-track{display:flex;gap:clamp(30px,5vw,80px);white-space:nowrap;
+  width:max-content;will-change:transform;}
+.wordmark-track span{font-family:var(--serif);font-size:clamp(4rem,15vw,13rem);
+  line-height:.82;letter-spacing:-.03em;flex:0 0 auto;
+  color:transparent;-webkit-text-stroke:1px var(--rule-2);
+  transition:-webkit-text-stroke-color .6s var(--ease),color .6s var(--ease);}
+.wordmark:hover .wordmark-track span{-webkit-text-stroke-color:var(--ox);}
+.wordmark-track span em{font-style:italic;-webkit-text-stroke-color:rgba(184,68,58,.55);}
+.wordmark:hover .wordmark-track span em{-webkit-text-stroke-color:var(--ox-hi);}
+
+/* ══ SCRAMBLE ══ the glyph cycling is done in script; this only keeps the
+   width from twitching as characters swap */
+.scramble{font-variant-numeric:tabular-nums;}
 
 /* ══ CONIC HALO ══ a slow rotating gradient ring, used behind a single
    focal element — never more than one on a page */

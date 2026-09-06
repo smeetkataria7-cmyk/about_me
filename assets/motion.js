@@ -14,6 +14,12 @@ function onScroll(fn){jobs.push(fn);fn();}
 function pump(){pending=false;for(var i=0;i<jobs.length;i++)jobs[i]();}
 addEventListener('scroll',function(){if(!pending){pending=true;requestAnimationFrame(pump);}},{passive:true});
 addEventListener('resize',function(){if(!pending){pending=true;requestAnimationFrame(pump);}});
+/* A hidden tab suspends rAF, so a page opened in the background never runs the
+   pump and its scroll-driven state is left wherever it started. Re-run once on
+   the way back so nothing is stuck when the tab is finally looked at. */
+addEventListener('visibilitychange',function(){
+  if(!doc.hidden&&!pending){pending=true;requestAnimationFrame(pump);}
+});
 
 var yr=doc.getElementById('yr');
 if(yr)yr.textContent=new Date().getFullYear();
@@ -316,6 +322,58 @@ onScroll(function(){doc.body.classList.toggle('scrolled',scrollY>innerHeight*.5)
       requestAnimationFrame(function(n){run(n,t);});
     })(0,0);
   });
+})();
+
+/* ── SCRAMBLE ── nav labels churn through glyphs before settling back.
+   The original text is kept on the node so a half-finished run can always be
+   restored, and each element runs at most one loop at a time. */
+(function(){
+  var targets=[].slice.call(doc.querySelectorAll('[data-scramble]'));
+  if(!targets.length||reduce||!matchMedia('(hover:hover)').matches)return;
+  var GLYPHS='ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&/<>*+-';
+  targets.forEach(function(el){
+    var real=el.textContent,timer=null;
+    el.classList.add('scramble');
+    el.addEventListener('pointerenter',function(){
+      if(timer)clearInterval(timer);
+      var frame=0,total=real.length*2+8;
+      timer=setInterval(function(){
+        frame++;
+        var settled=Math.floor(frame/2);
+        el.textContent=real.split('').map(function(ch,i){
+          if(ch===' ')return ' ';
+          if(i<settled)return ch;
+          return GLYPHS[Math.floor(Math.random()*GLYPHS.length)];
+        }).join('');
+        if(frame>=total){clearInterval(timer);timer=null;el.textContent=real;}
+      },28);
+    });
+    el.addEventListener('pointerleave',function(){
+      if(timer){clearInterval(timer);timer=null;}
+      el.textContent=real;
+    });
+  });
+})();
+
+/* ── WORDMARK ── the oversized name drifts, and reverses with scroll direction */
+(function(){
+  var track=doc.querySelector('.wordmark-track');
+  if(!track||reduce)return;
+  var x=0,half=0,base=.028,boost=0,dir=1,lastY=scrollY;
+  function measure(){half=track.scrollWidth/2;}
+  measure();addEventListener('resize',measure);addEventListener('load',measure);
+  onScroll(function(){
+    var dy=scrollY-lastY;
+    if(Math.abs(dy)>2)dir=dy>0?1:-1;
+    boost=Math.min(3.4,Math.abs(dy)/18);lastY=scrollY;
+  });
+  (function run(t,prev){
+    var dt=prev?Math.min(48,t-prev):16;
+    x-=dir*(base*(1+boost))*dt;boost*=.93;
+    if(half){if(-x>=half)x+=half;else if(x>0)x-=half;}
+    track.style.transform='translate3d('+x.toFixed(2)+'px,0,0)';
+    requestAnimationFrame(function(n){run(n,t);});
+  })(0,0);
 })();
 
 /* ── PARALLAX ── */
